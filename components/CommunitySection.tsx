@@ -8,7 +8,7 @@ const CommunitySection: React.FC = () => {
         <div className="flex-1 order-2 lg:order-1">
           <div className="relative rounded-[2.5rem] overflow-hidden border-2 border-white/10 shadow-2xl">
             <img 
-              src="https://direct-copper-e0utnso5cj.edgeone.app/Screenshot%202026-02-08%20013758.png" 
+              src="https://imgs.search.brave.com/ka2mXvtOn_xjIkOUogR7VZLvr9rCca9ltH9USCiNrKM/rs:fit:860:0:0:0/g:ce/aHR0cHM6Ly93d3cu/Y29sbGVnZWJhdGNo/LmNvbS9zdGF0aWMv/Y2xnLWdhbGxlcnkv/b3JpZW50YWwtZ3Jv/dXAtb2YtaW5zdGl0/dXRlcy1iaG9wYWwt/MzU4NzcxLndlYnA" 
               alt="Campus" 
               className="w-full h-auto"
             />
