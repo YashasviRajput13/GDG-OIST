@@ -1,11 +1,11 @@
 import React from 'react';
 
 const PROJECT_IMAGES = [
-  { url: 'https://identical-amber-lsyctmrvmc.edgeone.app/Screenshot%202026-02-08%20013625.png', alt: 'Web Development Session' },
+  { url: 'https://imgs.search.brave.com/aX6jRXUFz0IzOakNitYVs9FJj-54BE2GKikxJe4M_ug/rs:fit:860:0:0:0/g:ce/aHR0cHM6Ly9zeW5x/dWVzLWR5bi1jZG4u/czMuYXAtc291dGgt/MS5hbWF6b25hd3Mu/Y29tL29yaWVudGFs/L29pc3QtYmhvcGFs/L2ltYWdlcy9vcmll/bnRhbC1sYWItMi53/ZWJw', alt: 'Web Development Session' },
   { url: 'https://images.unsplash.com/photo-1531482615713-2afd69097998?auto=format&fit=crop&q=80&w=800', alt: 'Tech Talk Presentation' },
   { url: 'https://images.unsplash.com/photo-1581091226825-a6a2a5aee158?auto=format&fit=crop&q=80&w=800', alt: 'Hardware & IoT Workshop' },
   { url: 'https://images.unsplash.com/photo-1552664730-d307ca884978?auto=format&fit=crop&q=80&w=800', alt: 'Collaborative Brainstorming' },
-  { url: 'https://direct-copper-e0utnso5cj.edgeone.app/Screenshot%202026-02-08%20013758.png', alt: 'Annual Chapter Meetup' },
+  { url: 'https://imgs.search.brave.com/WAA-zi3PkfA8_1a_V5MNI5DvXJl_G9CUN7RDa5X0jC4/rs:fit:860:0:0:0/g:ce/aHR0cHM6Ly9zeW5x/dWVzLWR5bi1jZG4u/czMuYXAtc291dGgt/MS5hbWF6b25hd3Mu/Y29tL29yaWVudGFs/L29pc3QtYmhvcGFs/L2ltYWdlcy9hYm91/dC1oMS53ZWJw', alt: 'Annual Chapter Meetup' },
   { url: 'https://images.unsplash.com/photo-1522202176988-66273c2fd55f?auto=format&fit=crop&q=80&w=800', alt: 'Peer-to-Peer Learning' },
   { url: 'https://images.unsplash.com/photo-1523240795612-9a054b0db644?auto=format&fit=crop&q=80&w=800', alt: 'Project Showcasing' },
   { url: 'https://images.unsplash.com/photo-1515187029135-18ee286d815b?auto=format&fit=crop&q=80&w=800', alt: 'Deep Work Hackathon' },
