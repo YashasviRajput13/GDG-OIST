@@ -1,6 +1,11 @@
+import { motion } from "framer-motion";
+
 const Footer = () => {
   return (
-    <footer className="border-t border-border bg-card">
+    <footer className="border-t border-border bg-card relative overflow-hidden">
+      {/* Decorative gradient bar */}
+      <div className="absolute top-0 left-0 right-0 h-px bg-gradient-to-r from-[hsl(217,89%,61%)] via-[hsl(7,81%,56%)] to-[hsl(142,53%,43%)]" />
+
       <div className="max-w-7xl mx-auto px-6 md:px-12 lg:px-20 py-16">
         <div className="grid md:grid-cols-3 gap-12 mb-12">
           {/* Brand */}
@@ -32,7 +37,7 @@ const Footer = () => {
                 <a
                   key={link}
                   href={`#${link.toLowerCase()}`}
-                  className="block text-sm text-muted-foreground hover:text-foreground transition-colors"
+                  className="block text-sm text-muted-foreground hover:text-foreground hover:translate-x-1 transition-all duration-200"
                 >
                   {link}
                 </a>
@@ -50,7 +55,7 @@ const Footer = () => {
                 href="https://gdg.community.dev"
                 target="_blank"
                 rel="noopener noreferrer"
-                className="block text-sm text-muted-foreground hover:text-foreground transition-colors"
+                className="block text-sm text-muted-foreground hover:text-foreground hover:translate-x-1 transition-all duration-200"
               >
                 GDG Community Portal
               </a>
@@ -58,7 +63,7 @@ const Footer = () => {
                 href="https://developers.google.com"
                 target="_blank"
                 rel="noopener noreferrer"
-                className="block text-sm text-muted-foreground hover:text-foreground transition-colors"
+                className="block text-sm text-muted-foreground hover:text-foreground hover:translate-x-1 transition-all duration-200"
               >
                 Google Developers
               </a>
