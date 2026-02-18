@@ -14,11 +14,11 @@ interface TeamMember {
   twitter_url: string | null;
 }
 
-const avatarColors = [
-  "bg-google-blue",
-  "bg-google-red",
-  "bg-google-yellow",
-  "bg-google-green",
+const avatarGradients = [
+  "from-[hsl(217,89%,61%)] to-[hsl(217,89%,45%)]",
+  "from-[hsl(7,81%,56%)] to-[hsl(7,81%,42%)]",
+  "from-[hsl(43,96%,50%)] to-[hsl(43,96%,38%)]",
+  "from-[hsl(142,53%,43%)] to-[hsl(142,53%,30%)]",
 ];
 
 const Team = () => {
@@ -38,8 +38,10 @@ const Team = () => {
   }, []);
 
   return (
-    <section id="team" className="section-padding bg-card" ref={ref}>
-      <div className="max-w-7xl mx-auto">
+    <section id="team" className="section-padding bg-card relative overflow-hidden" ref={ref}>
+      <div className="absolute top-0 left-1/2 -translate-x-1/2 w-[600px] h-[600px] rounded-full bg-primary/3 blur-3xl" />
+
+      <div className="max-w-7xl mx-auto relative">
         <motion.div
           initial={{ opacity: 0, y: 30 }}
           animate={isInView ? { opacity: 1, y: 0 } : {}}
@@ -61,22 +63,19 @@ const Team = () => {
               initial={{ opacity: 0, y: 30 }}
               animate={isInView ? { opacity: 1, y: 0 } : {}}
               transition={{ duration: 0.7, delay: 0.2 + i * 0.08 }}
-              className="group text-center"
+              whileHover={{ y: -6 }}
+              className="group text-center p-8 rounded-2xl hover:bg-background hover:shadow-xl transition-all duration-500 border border-transparent hover:border-border"
             >
               {/* Avatar */}
-              <div
-                className={`w-24 h-24 mx-auto rounded-full ${
-                  avatarColors[i % avatarColors.length]
-                } flex items-center justify-center mb-6 group-hover:scale-105 transition-transform duration-300`}
-              >
+              <div className={`w-28 h-28 mx-auto rounded-2xl bg-gradient-to-br ${avatarGradients[i % avatarGradients.length]} flex items-center justify-center mb-6 group-hover:scale-105 group-hover:rounded-3xl transition-all duration-500 shadow-lg`}>
                 {member.avatar_url ? (
                   <img
                     src={member.avatar_url}
                     alt={member.name}
-                    className="w-full h-full object-cover rounded-full"
+                    className="w-full h-full object-cover rounded-2xl group-hover:rounded-3xl transition-all duration-500"
                   />
                 ) : (
-                  <span className="text-2xl font-bold text-primary-foreground">
+                  <span className="text-3xl font-bold text-primary-foreground">
                     {member.name
                       .split(" ")
                       .map((n) => n[0])
@@ -100,17 +99,17 @@ const Team = () => {
               {/* Socials */}
               <div className="flex items-center justify-center gap-3">
                 {member.github_url && (
-                  <a href={member.github_url} className="text-muted-foreground hover:text-foreground transition-colors">
+                  <a href={member.github_url} className="p-2 rounded-lg text-muted-foreground hover:text-foreground hover:bg-secondary transition-all">
                     <Github size={18} />
                   </a>
                 )}
                 {member.linkedin_url && (
-                  <a href={member.linkedin_url} className="text-muted-foreground hover:text-foreground transition-colors">
+                  <a href={member.linkedin_url} className="p-2 rounded-lg text-muted-foreground hover:text-foreground hover:bg-secondary transition-all">
                     <Linkedin size={18} />
                   </a>
                 )}
                 {member.twitter_url && (
-                  <a href={member.twitter_url} className="text-muted-foreground hover:text-foreground transition-colors">
+                  <a href={member.twitter_url} className="p-2 rounded-lg text-muted-foreground hover:text-foreground hover:bg-secondary transition-all">
                     <Twitter size={18} />
                   </a>
                 )}
