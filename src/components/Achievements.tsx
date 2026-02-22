@@ -91,9 +91,9 @@ const Achievements = () => {
 
   return (
     <section className="section-padding bg-card relative overflow-hidden" ref={ref}>
-      {/* Background decorations */}
-      <div className="absolute top-0 right-0 w-96 h-96 rounded-full bg-primary/5 blur-3xl" />
-      <div className="absolute bottom-0 left-0 w-72 h-72 rounded-full bg-accent/5 blur-3xl" />
+      {/* Organic background decorations */}
+      <div className="absolute top-10 right-0 w-96 h-96 bg-primary/5 animate-blob blur-3xl" />
+      <div className="absolute bottom-10 left-0 w-72 h-72 bg-accent/5 animate-blob-reverse blur-3xl" />
 
       <div className="max-w-7xl mx-auto relative">
         {/* Section header */}

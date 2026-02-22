@@ -1,6 +1,7 @@
 import { motion, useInView, useScroll, useTransform } from "framer-motion";
 import { useRef } from "react";
 import { ArrowRight } from "lucide-react";
+import FloatingBlobs from "@/components/FloatingBlobs";
 
 const stats = [
   { value: "500+", label: "Members", color: "bg-google-blue" },
@@ -83,14 +84,12 @@ const About = () => {
 
   return (
     <section id="about" className="section-padding bg-card relative overflow-hidden" ref={sectionRef}>
-      {/* Parallax decorations */}
-      <motion.div
-        style={{ y: bgY }}
-        className="absolute top-0 right-0 w-96 h-96 rounded-full bg-primary/5 blur-3xl -translate-y-1/2 translate-x-1/2"
-      />
-      <motion.div
-        style={{ y: useTransform(scrollYProgress, [0, 1], [0, -40]) }}
-        className="absolute bottom-0 left-0 w-72 h-72 rounded-full bg-accent/5 blur-3xl translate-y-1/2 -translate-x-1/2"
+      {/* Organic floating blobs */}
+      <FloatingBlobs
+        blobs={[
+          { color: "bg-primary/5", size: "w-96 h-96", position: "-top-20 -right-20", delay: 0, duration: 22 },
+          { color: "bg-accent/5", size: "w-72 h-72", position: "-bottom-10 -left-10", delay: 3, duration: 18 },
+        ]}
       />
 
       <div className="max-w-7xl mx-auto relative" ref={ref}>
