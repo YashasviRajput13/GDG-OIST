@@ -14,12 +14,13 @@ import Contact from "@/components/Contact";
 import Footer from "@/components/Footer";
 import LoadingScreen from "@/components/LoadingScreen";
 import SectionTransition from "@/components/SectionTransition";
+import OrganicDivider from "@/components/OrganicDivider";
+import CursorGlow from "@/components/CursorGlow";
 
 const SESSION_KEY = "gdg_loaded";
 
 const Index = () => {
   const [loading, setLoading] = useState(() => {
-    // Only show loading screen once per browser session
     return !sessionStorage.getItem(SESSION_KEY);
   });
   const [contentVisible, setContentVisible] = useState(
@@ -33,11 +34,10 @@ const Index = () => {
   };
 
   return (
-    <div className="min-h-screen bg-background">
-      {/* Loading screen — only first visit per session */}
+    <div className="min-h-screen bg-background grain-overlay">
+      <CursorGlow />
       {loading && <LoadingScreen onComplete={handleLoadComplete} />}
 
-      {/* Main content fades in after loader */}
       <AnimatePresence>
         {contentVisible && (
           <motion.div
@@ -46,34 +46,46 @@ const Index = () => {
             transition={{ duration: 0.6, ease: "easeOut" }}
           >
             <Navbar />
-
-            {/* Hero has its own internal animations */}
             <Hero />
 
-            {/* Each section wraps in a SectionTransition for scroll reveals */}
+            {/* Organic wave transition from Hero to Marquee */}
+            <OrganicDivider variant="wave" color="--card" />
+
             <SectionTransition>
               <TechMarquee />
             </SectionTransition>
+
+            <OrganicDivider variant="curve" flip color="--card" />
 
             <SectionTransition delay={0.05}>
               <About />
             </SectionTransition>
 
+            <OrganicDivider variant="blob" color="--background" />
+
             <SectionTransition delay={0.05}>
               <Events />
             </SectionTransition>
+
+            <OrganicDivider variant="wave" flip color="--background" />
 
             <SectionTransition delay={0.05}>
               <Gallery />
             </SectionTransition>
 
+            <OrganicDivider variant="curve" color="--card" />
+
             <SectionTransition delay={0.05}>
               <Achievements />
             </SectionTransition>
 
+            <OrganicDivider variant="blob" flip color="--background" />
+
             <SectionTransition delay={0.05}>
               <Team />
             </SectionTransition>
+
+            <OrganicDivider variant="wave" color="--background" />
 
             <SectionTransition delay={0.05}>
               <FAQ />

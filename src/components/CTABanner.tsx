@@ -14,8 +14,13 @@ const CTABanner = () => {
         transition={{ duration: 0.8, ease: [0.16, 1, 0.3, 1] as const }}
         className="max-w-7xl mx-auto relative overflow-hidden rounded-3xl"
       >
-        {/* Rich gradient background */}
+        {/* Rich gradient background with organic shape */}
         <div className="absolute inset-0 bg-gradient-to-br from-[hsl(217,89%,55%)] via-[hsl(190,89%,50%)] to-[hsl(142,53%,43%)]" />
+        <div className="absolute inset-0 bg-gradient-to-tr from-transparent via-white/5 to-white/10" />
+        
+        {/* Organic blob shapes */}
+        <div className="absolute -top-20 -left-20 w-80 h-80 bg-white/10 animate-blob blur-2xl" />
+        <div className="absolute -bottom-20 -right-20 w-96 h-96 bg-white/8 animate-blob-reverse blur-2xl" />
         <div className="absolute inset-0 bg-gradient-to-tr from-transparent via-white/5 to-white/10" />
 
         {/* Animated mesh grid */}

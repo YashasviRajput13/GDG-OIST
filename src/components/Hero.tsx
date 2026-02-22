@@ -3,6 +3,7 @@ import { ArrowDown, ChevronRight } from "lucide-react";
 import { useRef } from "react";
 import heroVideo from "@/assets/hero-video.mp4";
 import heroBg from "@/assets/hero-bg.jpg";
+import FloatingBlobs from "@/components/FloatingBlobs";
 
 const wordVariants = {
   hidden: { opacity: 0, y: 80, rotateX: 90 },
@@ -73,26 +74,15 @@ const Hero = () => {
         <div className="absolute inset-0 bg-gradient-to-r from-background/50 via-transparent to-background/50" />
       </motion.div>
 
-      {/* Animated floating orbs */}
-      <div className="absolute inset-0 pointer-events-none overflow-hidden">
-        {[
-          { color: "bg-google-blue/20", size: "w-64 h-64", pos: "top-1/4 -left-20", dur: 20 },
-          { color: "bg-google-red/15", size: "w-48 h-48", pos: "top-1/3 right-10", dur: 25 },
-          { color: "bg-google-green/10", size: "w-72 h-72", pos: "bottom-1/4 left-1/3", dur: 30 },
-          { color: "bg-google-yellow/15", size: "w-40 h-40", pos: "bottom-1/3 right-1/4", dur: 22 },
-        ].map((orb, i) => (
-          <motion.div
-            key={i}
-            animate={{
-              y: [0, -30, 0, 30, 0],
-              x: [0, 20, 0, -20, 0],
-              scale: [1, 1.1, 1, 0.9, 1],
-            }}
-            transition={{ duration: orb.dur, repeat: Infinity, ease: "easeInOut" }}
-            className={`absolute ${orb.pos} ${orb.size} ${orb.color} rounded-full blur-3xl`}
-          />
-        ))}
-      </div>
+      {/* Organic floating blobs */}
+      <FloatingBlobs
+        blobs={[
+          { color: "bg-google-blue/15", size: "w-80 h-80", position: "top-1/4 -left-24", delay: 0, duration: 18 },
+          { color: "bg-google-red/10", size: "w-56 h-56", position: "top-1/3 right-10", delay: 3, duration: 25 },
+          { color: "bg-google-green/8", size: "w-96 h-96", position: "bottom-1/4 left-1/3", delay: 1, duration: 30 },
+          { color: "bg-google-yellow/12", size: "w-48 h-48", position: "bottom-1/3 right-1/4", delay: 5, duration: 22 },
+        ]}
+      />
 
       {/* Content with parallax */}
       <motion.div

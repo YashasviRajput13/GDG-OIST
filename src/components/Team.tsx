@@ -47,7 +47,7 @@ const Team = () => {
 
   return (
     <section id="team" className="section-padding bg-card relative overflow-hidden" ref={sectionRef}>
-      <motion.div style={{ y: bgY }} className="absolute top-0 left-1/2 -translate-x-1/2 w-[600px] h-[600px] rounded-full bg-primary/3 blur-3xl" />
+      <motion.div style={{ y: bgY }} className="absolute top-0 left-1/2 -translate-x-1/2 w-[600px] h-[600px] bg-primary/3 animate-blob blur-3xl" />
 
       <div className="max-w-7xl mx-auto relative" ref={ref}>
         <motion.div className="text-center mb-20">
