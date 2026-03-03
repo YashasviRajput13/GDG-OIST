@@ -1,0 +1,94 @@
+/* FlowingMenu ================================================= */
+.menu-wrap {
+  width: 100%;
+  border-radius: 1.5rem;
+  overflow: hidden;
+}
+
+.menu {
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+}
+
+.menu__item {
+  position: relative;
+  overflow: hidden;
+  border-bottom: 1px solid;
+  flex: 1;
+  cursor: pointer;
+}
+
+.menu__item:first-child {
+  border-top: 1px solid;
+}
+
+.menu__item-link {
+  display: flex;
+  align-items: center;
+  font-family: 'Plus Jakarta Sans', 'Inter', system-ui, sans-serif;
+  font-size: clamp(1.1rem, 3vw, 1.8rem);
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  padding: 1.2rem 2rem;
+  text-decoration: none;
+  width: 100%;
+  transition: opacity 0.2s;
+  user-select: none;
+}
+
+.menu__item-link:hover {
+  opacity: 1;
+}
+
+/* Marquee overlay */
+.marquee {
+  position: absolute;
+  inset: 0;
+  overflow: hidden;
+  pointer-events: none;
+  transform: translateY(101%);
+  border-radius: inherit;
+}
+
+.marquee__inner-wrap {
+  height: 100%;
+  width: 100%;
+  position: relative;
+  transform: translateY(-101%);
+}
+
+.marquee__inner {
+  display: flex;
+  align-items: center;
+  height: 100%;
+  width: max-content;
+  will-change: transform;
+}
+
+.marquee__part {
+  display: flex;
+  align-items: center;
+  gap: 1.5rem;
+  padding: 0 1.5rem;
+  font-family: 'Plus Jakarta Sans', 'Inter', system-ui, sans-serif;
+  font-size: clamp(1.1rem, 3vw, 1.8rem);
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  white-space: nowrap;
+}
+
+.marquee__part span {
+  flex-shrink: 0;
+}
+
+.marquee__img {
+  width: 3rem;
+  height: 3rem;
+  border-radius: 50%;
+  background-size: cover;
+  background-position: center;
+  flex-shrink: 0;
+}

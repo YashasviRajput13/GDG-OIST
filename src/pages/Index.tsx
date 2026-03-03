@@ -16,16 +16,40 @@ import LoadingScreen from "@/components/LoadingScreen";
 import SectionTransition from "@/components/SectionTransition";
 import OrganicDivider from "@/components/OrganicDivider";
 import CursorGlow from "@/components/CursorGlow";
+import Aurora from "@/components/Aurora";
+import MagicBento from "@/components/MagicBento";
+
+import { useSound } from "@/hooks/useSound";
 
 const SESSION_KEY = "gdg_loaded";
 
 const Index = () => {
+  const { startMusic } = useSound();
   const [loading, setLoading] = useState(() => {
     return !sessionStorage.getItem(SESSION_KEY);
   });
   const [contentVisible, setContentVisible] = useState(
     () => !!sessionStorage.getItem(SESSION_KEY)
   );
+
+  useEffect(() => {
+    const handleFirstInteraction = () => {
+      startMusic();
+      window.removeEventListener("mousedown", handleFirstInteraction);
+      window.removeEventListener("keydown", handleFirstInteraction);
+      window.removeEventListener("touchstart", handleFirstInteraction);
+    };
+
+    window.addEventListener("mousedown", handleFirstInteraction);
+    window.addEventListener("keydown", handleFirstInteraction);
+    window.addEventListener("touchstart", handleFirstInteraction);
+
+    return () => {
+      window.removeEventListener("mousedown", handleFirstInteraction);
+      window.removeEventListener("keydown", handleFirstInteraction);
+      window.removeEventListener("touchstart", handleFirstInteraction);
+    };
+  }, [startMusic]);
 
   const handleLoadComplete = () => {
     sessionStorage.setItem(SESSION_KEY, "1");
@@ -35,6 +59,15 @@ const Index = () => {
 
   return (
     <div className="min-h-screen bg-background grain-overlay">
+      {/* Fixed Aurora WebGL background */}
+      <div style={{ position: 'fixed', inset: 0, zIndex: 0, pointerEvents: 'none' }}>
+        <Aurora
+          colorStops={['#4285F4', '#34A853', '#EA4335']}
+          amplitude={1.2}
+          blend={0.6}
+          speed={0.5}
+        />
+      </div>
       <CursorGlow />
       {loading && <LoadingScreen onComplete={handleLoadComplete} />}
 
@@ -53,6 +86,30 @@ const Index = () => {
 
             <SectionTransition>
               <TechMarquee />
+            </SectionTransition>
+
+            <SectionTransition delay={0.05}>
+              <div className="max-w-7xl mx-auto px-6 md:px-12 lg:px-20 py-12">
+                <motion.div
+                  initial={{ opacity: 0, y: 20 }}
+                  whileInView={{ opacity: 1, y: 0 }}
+                  viewport={{ once: true }}
+                  transition={{ duration: 0.6 }}
+                  className="mb-12 text-center"
+                >
+                  <h2 className="font-display text-3xl md:text-4xl font-bold text-foreground mb-4">
+                    Explore Our <span className="text-google-blue">Core</span> Activities
+                  </h2>
+                  <p className="text-muted-foreground max-w-2xl mx-auto">
+                    From hands-on learning to global competitions, discover how we build the future together.
+                  </p>
+                </motion.div>
+                <MagicBento
+                  glowColor="66, 133, 244"
+                  enableTilt={true}
+                  enableMagnetism={true}
+                />
+              </div>
             </SectionTransition>
 
             <OrganicDivider variant="curve" flip color="--card" />

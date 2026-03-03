@@ -1,0 +1,145 @@
+/* ============================================================
+   MagicBento – Bento grid with spotlight + particle effects
+   ============================================================ */
+
+.bento-section {
+    width: 100%;
+}
+
+.card-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 1rem;
+    width: 100%;
+}
+
+@media (max-width: 1024px) {
+    .card-grid {
+        grid-template-columns: repeat(2, 1fr);
+    }
+}
+
+@media (max-width: 640px) {
+    .card-grid {
+        grid-template-columns: 1fr;
+    }
+}
+
+/* ── Base card ─────────────────────────────────────────────── */
+.magic-bento-card {
+    position: relative;
+    overflow: hidden;
+    border-radius: 1.25rem;
+    padding: 1.75rem;
+    min-height: 180px;
+    cursor: default;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+    transform-style: preserve-3d;
+
+    /* CSS custom properties reset */
+    --glow-x: 50%;
+    --glow-y: 50%;
+    --glow-intensity: 0;
+    --glow-radius: 300px;
+    --glow-color: 66, 133, 244;
+}
+
+/* Inner glow radial overlay */
+.magic-bento-card::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    border-radius: inherit;
+    background: radial-gradient(circle var(--glow-radius) at var(--glow-x) var(--glow-y),
+            rgba(var(--glow-color), calc(var(--glow-intensity) * 0.25)) 0%,
+            transparent 70%);
+    pointer-events: none;
+    z-index: 1;
+    transition: opacity 0.2s;
+}
+
+/* ── Border glow variant ───────────────────────────────────── */
+.magic-bento-card--border-glow {
+    border: 1px solid transparent;
+    background-clip: padding-box;
+    box-shadow:
+        inset 0 0 0 1px rgba(var(--glow-color), calc(var(--glow-intensity) * 0.6)),
+        0 0 20px rgba(var(--glow-color), calc(var(--glow-intensity) * 0.15));
+}
+
+/* ── Text auto-hide variant ────────────────────────────────── */
+.magic-bento-card--text-autohide .magic-bento-card__description {
+    opacity: 0;
+    transform: translateY(8px);
+    transition: opacity 0.3s ease, transform 0.3s ease;
+}
+
+.magic-bento-card--text-autohide:hover .magic-bento-card__description {
+    opacity: 1;
+    transform: translateY(0);
+}
+
+/* ── Card internals ────────────────────────────────────────── */
+.magic-bento-card__header {
+    position: relative;
+    z-index: 2;
+}
+
+.magic-bento-card__label {
+    display: inline-block;
+    font-size: 0.68rem;
+    font-weight: 600;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    padding: 0.25rem 0.65rem;
+    border-radius: 99px;
+    background: rgba(var(--glow-color), 0.18);
+    color: rgba(255, 255, 255, 0.75);
+    border: 1px solid rgba(var(--glow-color), 0.35);
+    transition: background 0.3s ease, color 0.3s ease;
+}
+
+.magic-bento-card:hover .magic-bento-card__label {
+    background: rgba(var(--glow-color), 0.32);
+    color: #fff;
+}
+
+.magic-bento-card__content {
+    position: relative;
+    z-index: 2;
+}
+
+.magic-bento-card__title {
+    font-family: 'Plus Jakarta Sans', 'Inter', system-ui, sans-serif;
+    font-size: 1.4rem;
+    font-weight: 700;
+    color: #fff;
+    margin: 0 0 0.4rem;
+    line-height: 1.25;
+}
+
+.magic-bento-card__description {
+    font-family: 'Inter', system-ui, sans-serif;
+    font-size: 0.85rem;
+    color: rgba(255, 255, 255, 0.55);
+    margin: 0;
+    line-height: 1.5;
+}
+
+/* ── Global spotlight (injected into body) ─────────────────── */
+.global-spotlight {
+    position: fixed;
+    pointer-events: none;
+    z-index: 200;
+}
+
+/* ── Particle dots ─────────────────────────────────────────── */
+.particle {
+    position: absolute;
+    border-radius: 50%;
+    pointer-events: none;
+    z-index: 100;
+}

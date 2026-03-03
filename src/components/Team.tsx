@@ -1,7 +1,7 @@
 import { motion, useInView, useScroll, useTransform } from "framer-motion";
 import { useRef, useEffect, useState } from "react";
 import { supabase } from "@/integrations/supabase/client";
-import ChromaGrid, { type ChromaGridItem } from "@/components/ChromaGrid";
+import ProfileCard from "./ProfileCard";
 
 interface TeamMember {
   id: string;
@@ -15,10 +15,10 @@ interface TeamMember {
 }
 
 const googleColors = [
-  { border: 'hsl(217 89% 61%)', gradient: 'linear-gradient(145deg, hsl(217 89% 61%), hsl(224 25% 7%))' },
-  { border: 'hsl(7 81% 56%)', gradient: 'linear-gradient(210deg, hsl(7 81% 56%), hsl(224 25% 7%))' },
-  { border: 'hsl(43 96% 50%)', gradient: 'linear-gradient(165deg, hsl(43 96% 50%), hsl(224 25% 7%))' },
-  { border: 'hsl(142 53% 43%)', gradient: 'linear-gradient(195deg, hsl(142 53% 43%), hsl(224 25% 7%))' },
+  { border: 'hsl(217 89% 61%)', glow: 'rgba(66, 133, 244, 0.4)', gradient: 'linear-gradient(145deg, rgba(66, 133, 244, 0.2), rgba(6, 0, 16, 0.8))' },
+  { border: 'hsl(7 81% 56%)', glow: 'rgba(234, 67, 53, 0.4)', gradient: 'linear-gradient(145deg, rgba(234, 67, 53, 0.2), rgba(6, 0, 16, 0.8))' },
+  { border: 'hsl(43 96% 50%)', glow: 'rgba(251, 188, 5, 0.4)', gradient: 'linear-gradient(145deg, rgba(251, 188, 5, 0.2), rgba(6, 0, 16, 0.8))' },
+  { border: 'hsl(142 53% 43%)', glow: 'rgba(52, 168, 83, 0.4)', gradient: 'linear-gradient(145deg, rgba(52, 168, 83, 0.2), rgba(6, 0, 16, 0.8))' },
 ];
 
 const Team = () => {
@@ -44,16 +44,6 @@ const Team = () => {
   }, []);
 
   const headingWords = ["The", "people", "behind", "GDG"];
-
-  const chromaItems: ChromaGridItem[] = members.map((m, i) => ({
-    image: m.avatar_url,
-    title: m.name,
-    subtitle: m.role,
-    handle: m.bio ? m.bio.substring(0, 60) : null,
-    borderColor: googleColors[i % googleColors.length].border,
-    gradient: googleColors[i % googleColors.length].gradient,
-    url: m.linkedin_url || m.github_url || m.twitter_url || null,
-  }));
 
   return (
     <section id="team" className="section-padding bg-card relative overflow-hidden" ref={sectionRef}>
@@ -88,12 +78,26 @@ const Team = () => {
           initial={{ opacity: 0, y: 40 }}
           animate={isInView ? { opacity: 1, y: 0 } : {}}
           transition={{ duration: 0.8, delay: 0.5, ease: [0.16, 1, 0.3, 1] }}
+          className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8 md:gap-12"
         >
-          <ChromaGrid
-            items={chromaItems}
-            columns={3}
-            className="max-sm:[&]:!grid-cols-1 max-lg:[&]:!grid-cols-2"
-          />
+          {members.map((m, i) => {
+            const color = googleColors[i % googleColors.length];
+            return (
+              <ProfileCard
+                key={m.id}
+                avatarUrl={m.avatar_url || '/placeholder.svg'}
+                name={m.name}
+                title={m.role}
+                handle={m.name.toLowerCase().replace(/\s+/g, '')}
+                innerGradient={color.gradient}
+                behindGlowColor={color.glow}
+                onContactClick={() => {
+                  const url = m.linkedin_url || m.github_url || m.twitter_url;
+                  if (url) window.open(url, '_blank');
+                }}
+              />
+            );
+          })}
         </motion.div>
       </div>
     </section>

@@ -1,0 +1,117 @@
+import React, { createContext, useContext, useState, useEffect, useCallback } from 'react';
+
+interface SoundContextType {
+    isMuted: boolean;
+    toggleMute: () => void;
+    playSound: (soundType: 'hover' | 'click' | 'success' | 'transition') => void;
+    startMusic: () => void;
+    stopMusic: () => void;
+}
+
+const SoundContext = createContext<SoundContextType | undefined>(undefined);
+
+const SOUND_URLS = {
+    hover: 'https://assets.mixkit.co/active_storage/sfx/2571/2571-preview.mp3', // Soft blip
+    click: 'https://assets.mixkit.co/active_storage/sfx/2568/2568-preview.mp3', // Light tap
+    success: 'https://assets.mixkit.co/active_storage/sfx/1435/1435-preview.mp3', // Subtle chime
+    transition: 'https://assets.mixkit.co/active_storage/sfx/2561/2561-preview.mp3', // Soft whoosh
+};
+
+const MUSIC_URL = 'https://assets.mixkit.co/music/preview/mixkit-serene-view-443.mp3'; // Serene ambient loop
+
+export const SoundProvider: React.FC<{ children: React.ReactNode }> = ({ children }) => {
+    const [isMuted, setIsMuted] = useState(() => {
+        const saved = localStorage.getItem('gdg_sound_muted');
+        return saved ? JSON.parse(saved) : false;
+    });
+
+    const [audioCache] = useState<Record<string, HTMLAudioElement>>({});
+    const musicRef = React.useRef<HTMLAudioElement | null>(null);
+    const [isMusicPlaying, setIsMusicPlaying] = useState(false);
+
+    useEffect(() => {
+        // Preload sounds
+        Object.entries(SOUND_URLS).forEach(([key, url]) => {
+            const audio = new Audio(url);
+            audio.preload = 'auto';
+            audioCache[key] = audio;
+        });
+
+        // Setup music
+        const music = new Audio(MUSIC_URL);
+        music.loop = true;
+        music.volume = 0.15; // Low background volume
+        music.preload = 'auto';
+        musicRef.current = music;
+
+        return () => {
+            if (musicRef.current) {
+                musicRef.current.pause();
+                musicRef.current = null;
+            }
+        };
+    }, [audioCache]);
+
+    // Handle mute state changes for music
+    useEffect(() => {
+        if (musicRef.current) {
+            musicRef.current.muted = isMuted;
+            if (!isMuted && isMusicPlaying) {
+                musicRef.current.play().catch(() => {
+                    console.debug('Music play blocked by browser on mute toggle');
+                });
+            }
+        }
+    }, [isMuted, isMusicPlaying]);
+
+    const toggleMute = useCallback(() => {
+        setIsMuted((prev: boolean) => {
+            const newState = !prev;
+            localStorage.setItem('gdg_sound_muted', JSON.stringify(newState));
+            return newState;
+        });
+    }, []);
+
+    const playSound = useCallback((soundType: keyof typeof SOUND_URLS) => {
+        if (isMuted) return;
+
+        const audio = audioCache[soundType];
+        if (audio) {
+            const playInstance = audio.cloneNode() as HTMLAudioElement;
+            playInstance.volume = 0.3;
+            playInstance.play().catch(() => {
+                console.debug('Audio playback blocked by browser');
+            });
+        }
+    }, [isMuted, audioCache]);
+
+    const startMusic = useCallback(() => {
+        if (musicRef.current && !isMusicPlaying) {
+            setIsMusicPlaying(true);
+            musicRef.current.play().catch(() => {
+                console.debug('Initial music playback blocked by browser');
+            });
+        }
+    }, [isMusicPlaying]);
+
+    const stopMusic = useCallback(() => {
+        if (musicRef.current && isMusicPlaying) {
+            setIsMusicPlaying(false);
+            musicRef.current.pause();
+        }
+    }, [isMusicPlaying]);
+
+    return (
+        <SoundContext.Provider value={{ isMuted, toggleMute, playSound, startMusic, stopMusic }}>
+            {children}
+        </SoundContext.Provider>
+    );
+};
+
+export const useSound = () => {
+    const context = useContext(SoundContext);
+    if (!context) {
+        throw new Error('useSound must be used within a SoundProvider');
+    }
+    return context;
+};

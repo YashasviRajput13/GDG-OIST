@@ -1,8 +1,9 @@
 import { useState, useEffect, useMemo } from "react";
 import { motion, AnimatePresence } from "framer-motion";
-import { Menu, X, Sun, Moon } from "lucide-react";
+import { Menu, X, Sun, Moon, Volume2, VolumeX } from "lucide-react";
 import { useTheme } from "next-themes";
 import GooeyNav from "@/components/GooeyNav";
+import { useSound } from "@/hooks/useSound";
 
 const navLinks = [
   { label: "Home", href: "#home" },
@@ -24,6 +25,7 @@ const Navbar = () => {
   }, [activeSection]);
   const [mounted, setMounted] = useState(false);
   const { theme, setTheme } = useTheme();
+  const { isMuted, toggleMute, playSound } = useSound();
 
   useEffect(() => {
     setMounted(true);
@@ -45,23 +47,40 @@ const Navbar = () => {
     return () => window.removeEventListener("scroll", handleScroll);
   }, []);
 
-  const toggleTheme = () => setTheme(theme === "dark" ? "light" : "dark");
+  const toggleTheme = () => {
+    playSound('click');
+    setTheme(theme === "dark" ? "light" : "dark");
+  };
+
+  const handleToggleMute = () => {
+    toggleMute();
+    // Use timeout to play sound after state update if unmuting
+    setTimeout(() => {
+      // If was muted, it's now unmuted (check localstorage or just trust the toggle)
+      if (localStorage.getItem('gdg_sound_muted') === 'false') {
+        playSound('click');
+      }
+    }, 50);
+  };
 
   return (
     <motion.nav
       initial={{ y: -100 }}
       animate={{ y: 0 }}
       transition={{ duration: 0.6, ease: "easeOut" }}
-      className={`fixed top-0 left-0 right-0 z-50 transition-all duration-500 ${
-        scrolled
+      className={`fixed top-0 left-0 right-0 z-50 transition-all duration-500 ${scrolled
           ? "bg-card/90 backdrop-blur-xl shadow-sm border-b border-border"
           : "bg-transparent"
-      }`}
+        }`}
     >
       <div className="max-w-7xl mx-auto px-6 md:px-12 lg:px-20">
         <div className="flex items-center justify-between h-20">
           {/* Logo */}
-          <a href="#home" className="flex items-center gap-2 group">
+          <a
+            href="#home"
+            className="flex items-center gap-2 group"
+            onMouseEnter={() => playSound('hover')}
+          >
             <div className="flex gap-1">
               {["bg-google-blue", "bg-google-red", "bg-google-yellow", "bg-google-green"].map((c) => (
                 <span key={c} className={`w-3 h-3 rounded-full ${c} group-hover:scale-110 transition-transform`} />
@@ -85,25 +104,42 @@ const Navbar = () => {
               colors={[1, 2, 3, 4]}
             />
 
-            {/* Dark mode toggle - pill switch */}
-            {mounted && (
-              <button
-                onClick={toggleTheme}
-                className="relative w-16 h-8 rounded-full border border-border bg-muted/60 backdrop-blur-sm transition-colors duration-300 focus:outline-none"
-                aria-label="Toggle dark mode"
-              >
-                <Sun size={14} className="absolute left-2 top-1/2 -translate-y-1/2 text-yellow-500" />
-                <Moon size={14} className="absolute right-2 top-1/2 -translate-y-1/2 text-muted-foreground" />
-                <motion.div
-                  className="absolute top-1 w-6 h-6 rounded-full bg-yellow-400 dark:bg-slate-600 shadow-md"
-                  animate={{ left: theme === "dark" ? "calc(100% - 28px)" : "4px" }}
-                  transition={{ type: "spring", stiffness: 500, damping: 30 }}
-                />
-              </button>
-            )}
+            <div className="flex items-center gap-2">
+              {/* Sound Toggle */}
+              {mounted && (
+                <button
+                  onClick={handleToggleMute}
+                  className="p-2 rounded-full border border-border bg-muted/60 backdrop-blur-sm hover:bg-muted transition-colors"
+                  aria-label={isMuted ? "Unmute sounds" : "Mute sounds"}
+                  onMouseEnter={() => playSound('hover')}
+                >
+                  {isMuted ? <VolumeX size={18} /> : <Volume2 size={18} />}
+                </button>
+              )}
+
+              {/* Dark mode toggle - pill switch */}
+              {mounted && (
+                <button
+                  onClick={toggleTheme}
+                  onMouseEnter={() => playSound('hover')}
+                  className="relative w-16 h-8 rounded-full border border-border bg-muted/60 backdrop-blur-sm transition-colors duration-300 focus:outline-none"
+                  aria-label="Toggle dark mode"
+                >
+                  <Sun size={14} className="absolute left-2 top-1/2 -translate-y-1/2 text-yellow-500" />
+                  <Moon size={14} className="absolute right-2 top-1/2 -translate-y-1/2 text-muted-foreground" />
+                  <motion.div
+                    className="absolute top-1 w-6 h-6 rounded-full bg-yellow-400 dark:bg-slate-600 shadow-md"
+                    animate={{ left: theme === "dark" ? "calc(100% - 28px)" : "4px" }}
+                    transition={{ type: "spring", stiffness: 500, damping: 30 }}
+                  />
+                </button>
+              )}
+            </div>
 
             <motion.a
               href="#contact"
+              onMouseEnter={() => playSound('hover')}
+              onClick={() => playSound('click')}
               whileHover={{ scale: 1.05 }}
               whileTap={{ scale: 0.95 }}
               className="px-5 py-2 rounded-full bg-primary text-primary-foreground text-sm font-semibold hover:shadow-lg hover:shadow-primary/25 transition-all"
@@ -112,8 +148,17 @@ const Navbar = () => {
             </motion.a>
           </div>
 
-          {/* Mobile: dark mode + hamburger */}
+          {/* Mobile: sound + dark mode + hamburger */}
           <div className="md:hidden flex items-center gap-3">
+            {mounted && (
+              <button
+                onClick={handleToggleMute}
+                className="p-1.5 rounded-full border border-border bg-muted/60"
+                aria-label={isMuted ? "Unmute sounds" : "Mute sounds"}
+              >
+                {isMuted ? <VolumeX size={16} /> : <Volume2 size={16} />}
+              </button>
+            )}
             {mounted && (
               <button
                 onClick={toggleTheme}
@@ -131,7 +176,10 @@ const Navbar = () => {
               </button>
             )}
             <button
-              onClick={() => setIsOpen(!isOpen)}
+              onClick={() => {
+                playSound('click');
+                setIsOpen(!isOpen);
+              }}
               className="text-foreground"
               aria-label="Toggle menu"
             >
@@ -156,21 +204,24 @@ const Navbar = () => {
                   key={link.label}
                   href={link.href}
                   onClick={() => setIsOpen(false)}
+                  onMouseEnter={() => playSound('hover')}
                   initial={{ opacity: 0, x: -20 }}
                   animate={{ opacity: 1, x: 0 }}
                   transition={{ delay: i * 0.05 }}
-                  className={`block text-base font-medium transition-colors ${
-                    activeSection === link.href.replace("#", "")
+                  className={`block text-base font-medium transition-colors ${activeSection === link.href.replace("#", "")
                       ? "text-primary"
                       : "text-muted-foreground hover:text-foreground"
-                  }`}
+                    }`}
                 >
                   {link.label}
                 </motion.a>
               ))}
               <a
                 href="#contact"
-                onClick={() => setIsOpen(false)}
+                onClick={() => {
+                  playSound('click');
+                  setIsOpen(false);
+                }}
                 className="block mt-4 px-5 py-3 rounded-full bg-primary text-primary-foreground text-center text-sm font-semibold"
               >
                 Join Us
