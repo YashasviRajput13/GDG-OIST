@@ -1,7 +1,8 @@
-import { useState, useEffect } from "react";
+import { useState, useEffect, useMemo } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { Menu, X, Sun, Moon } from "lucide-react";
 import { useTheme } from "next-themes";
+import GooeyNav from "@/components/GooeyNav";
 
 const navLinks = [
   { label: "Home", href: "#home" },
@@ -17,8 +18,12 @@ const Navbar = () => {
   const [isOpen, setIsOpen] = useState(false);
   const [scrolled, setScrolled] = useState(false);
   const [activeSection, setActiveSection] = useState("home");
-  const { theme, setTheme } = useTheme();
+  const activeIndex = useMemo(() => {
+    const idx = navLinks.findIndex(l => l.href.replace("#", "") === activeSection);
+    return idx >= 0 ? idx : 0;
+  }, [activeSection]);
   const [mounted, setMounted] = useState(false);
+  const { theme, setTheme } = useTheme();
 
   useEffect(() => {
     setMounted(true);
@@ -68,27 +73,17 @@ const Navbar = () => {
           </a>
 
           {/* Desktop links */}
-          <div className="hidden md:flex items-center gap-7">
-            {navLinks.map((link) => (
-              <a
-                key={link.label}
-                href={link.href}
-                className={`relative text-sm font-medium transition-colors duration-200 ${
-                  activeSection === link.href.replace("#", "")
-                    ? "text-foreground"
-                    : "text-muted-foreground hover:text-foreground"
-                }`}
-              >
-                {link.label}
-                {activeSection === link.href.replace("#", "") && (
-                  <motion.div
-                    layoutId="activeNav"
-                    className="absolute -bottom-1 left-0 right-0 h-0.5 bg-primary rounded-full"
-                    transition={{ type: "spring", stiffness: 300, damping: 30 }}
-                  />
-                )}
-              </a>
-            ))}
+          <div className="hidden md:flex items-center gap-4">
+            <GooeyNav
+              items={navLinks}
+              activeIndex={activeIndex}
+              particleCount={12}
+              particleDistances={[70, 10]}
+              particleR={80}
+              animationTime={500}
+              timeVariance={200}
+              colors={[1, 2, 3, 4]}
+            />
 
             {/* Dark mode toggle - pill switch */}
             {mounted && (
