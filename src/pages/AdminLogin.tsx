@@ -89,6 +89,10 @@ const AdminLogin = () => {
               {loading ? "Signing in..." : "Sign In"}
             </Button>
           </form>
+          <p className="text-center text-sm text-muted-foreground mt-4">
+            Don't have an account?{" "}
+            <Link to="/admin/signup" className="text-primary hover:underline">Sign up</Link>
+          </p>
         </CardContent>
       </Card>
     </div>
