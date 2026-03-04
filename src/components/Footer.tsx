@@ -1,5 +1,5 @@
 import { motion } from "framer-motion";
-
+import { Link } from "react-router-dom";
 const Footer = () => {
   return (
     <footer className="border-t border-border bg-card relative overflow-hidden">
