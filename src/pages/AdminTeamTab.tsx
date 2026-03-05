@@ -17,10 +17,13 @@ interface TeamMember {
   github_url: string | null;
   twitter_url: string | null;
   display_order: number | null;
+  category: string | null;
 }
 
+const CATEGORIES = ["Tech", "Media", "Women in Tech", "Other"];
+
 const empty: Omit<TeamMember, "id"> = {
-  name: "", role: "", bio: "", avatar_url: "", linkedin_url: "", github_url: "", twitter_url: "", display_order: 0,
+  name: "", role: "", bio: "", avatar_url: "", linkedin_url: "", github_url: "", twitter_url: "", display_order: 0, category: "Tech",
 };
 
 const AdminTeamTab = () => {
