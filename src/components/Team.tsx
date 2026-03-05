@@ -29,6 +29,7 @@ const Team = () => {
   const sectionRef = useRef(null);
   const isInView = useInView(ref, { once: true, margin: "-100px" });
   const [members, setMembers] = useState<TeamMember[]>([]);
+  const [activeCategory, setActiveCategory] = useState<string>("All");
   const { scrollYProgress } = useScroll({
     target: sectionRef,
     offset: ["start end", "end start"],
@@ -47,6 +48,13 @@ const Team = () => {
   }, []);
 
   const headingWords = ["The", "people", "behind", "GDG"];
+
+  const availableCategories = categoryOrder.filter(cat =>
+    members.some(m => (m.category || "Other") === cat)
+  );
+  const filteredMembers = activeCategory === "All"
+    ? members
+    : members.filter(m => (m.category || "Other") === activeCategory);
 
   return (
     <section id="team" className="section-padding bg-card relative overflow-hidden" ref={sectionRef}>
@@ -77,57 +85,68 @@ const Team = () => {
           </h2>
         </motion.div>
 
-        {(() => {
-          const grouped = members.reduce<Record<string, TeamMember[]>>((acc, m) => {
-            const cat = m.category || "Other";
-            if (!acc[cat]) acc[cat] = [];
-            acc[cat].push(m);
-            return acc;
-          }, {});
-          const sortedCategories = Object.keys(grouped).sort(
-            (a, b) => (categoryOrder.indexOf(a) === -1 ? 99 : categoryOrder.indexOf(a)) - (categoryOrder.indexOf(b) === -1 ? 99 : categoryOrder.indexOf(b))
-          );
-          let globalIndex = 0;
-          return sortedCategories.map((cat, catIdx) => (
-            <div key={cat} className={catIdx > 0 ? "mt-16" : ""}>
-              <motion.h3
-                initial={{ opacity: 0, x: -20 }}
-                animate={isInView ? { opacity: 1, x: 0 } : {}}
-                transition={{ duration: 0.5, delay: 0.4 + catIdx * 0.1 }}
-                className="text-2xl md:text-3xl font-display font-semibold text-foreground mb-8 border-l-4 pl-4"
-                style={{ borderColor: googleColors[catIdx % googleColors.length].border }}
+        {/* Category filter tabs */}
+        <motion.div
+          initial={{ opacity: 0, y: 20 }}
+          animate={isInView ? { opacity: 1, y: 0 } : {}}
+          transition={{ duration: 0.6, delay: 0.4 }}
+          className="flex flex-wrap justify-center gap-3 mb-14"
+        >
+          {["All", ...availableCategories].map((cat, i) => {
+            const isActive = activeCategory === cat;
+            const color = cat === "All" ? googleColors[0] : googleColors[(availableCategories.indexOf(cat)) % googleColors.length];
+            return (
+              <motion.button
+                key={cat}
+                onClick={() => setActiveCategory(cat)}
+                whileHover={{ scale: 1.05 }}
+                whileTap={{ scale: 0.97 }}
+                className="px-5 py-2.5 rounded-full text-sm font-medium transition-all duration-300 border"
+                style={{
+                  borderColor: isActive ? color.border : 'hsl(var(--border))',
+                  background: isActive ? color.gradient : 'transparent',
+                  color: isActive ? 'white' : 'hsl(var(--muted-foreground))',
+                  boxShadow: isActive ? `0 0 20px ${color.glow}` : 'none',
+                }}
               >
                 {cat}
-              </motion.h3>
-              <motion.div
-                initial={{ opacity: 0, y: 40 }}
-                animate={isInView ? { opacity: 1, y: 0 } : {}}
-                transition={{ duration: 0.8, delay: 0.5 + catIdx * 0.15, ease: [0.16, 1, 0.3, 1] }}
-                className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8 md:gap-12"
-              >
-                {grouped[cat].map((m) => {
-                  const color = googleColors[globalIndex % googleColors.length];
-                  globalIndex++;
-                  return (
-                    <ProfileCard
-                      key={m.id}
-                      avatarUrl={m.avatar_url || '/placeholder.svg'}
-                      name={m.name}
-                      title={m.role}
-                      handle={m.name.toLowerCase().replace(/\s+/g, '')}
-                      innerGradient={color.gradient}
-                      behindGlowColor={color.glow}
-                      onContactClick={() => {
-                        const url = m.linkedin_url || m.github_url || m.twitter_url;
-                        if (url) window.open(url, '_blank');
-                      }}
-                    />
-                  );
-                })}
-              </motion.div>
-            </div>
-          ));
-        })()}
+                {cat !== "All" && (
+                  <span className="ml-2 text-xs opacity-70">
+                    {members.filter(m => (m.category || "Other") === cat).length}
+                  </span>
+                )}
+              </motion.button>
+            );
+          })}
+        </motion.div>
+
+        {/* Filtered members grid */}
+        <motion.div
+          key={activeCategory}
+          initial={{ opacity: 0, y: 30 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.5, ease: [0.16, 1, 0.3, 1] }}
+          className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8 md:gap-12"
+        >
+          {filteredMembers.map((m, i) => {
+            const color = googleColors[i % googleColors.length];
+            return (
+              <ProfileCard
+                key={m.id}
+                avatarUrl={m.avatar_url || '/placeholder.svg'}
+                name={m.name}
+                title={m.role}
+                handle={m.name.toLowerCase().replace(/\s+/g, '')}
+                innerGradient={color.gradient}
+                behindGlowColor={color.glow}
+                onContactClick={() => {
+                  const url = m.linkedin_url || m.github_url || m.twitter_url;
+                  if (url) window.open(url, '_blank');
+                }}
+              />
+            );
+          })}
+        </motion.div>
       </div>
     </section>
   );
