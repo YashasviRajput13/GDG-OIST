@@ -49,6 +49,13 @@ const Team = () => {
 
   const headingWords = ["The", "people", "behind", "GDG"];
 
+  const availableCategories = categoryOrder.filter(cat =>
+    members.some(m => (m.category || "Other") === cat)
+  );
+  const filteredMembers = activeCategory === "All"
+    ? members
+    : members.filter(m => (m.category || "Other") === activeCategory);
+
   return (
     <section id="team" className="section-padding bg-card relative overflow-hidden" ref={sectionRef}>
       <motion.div style={{ y: bgY }} className="absolute top-0 left-1/2 -translate-x-1/2 w-[600px] h-[600px] bg-primary/3 animate-blob blur-3xl" />
