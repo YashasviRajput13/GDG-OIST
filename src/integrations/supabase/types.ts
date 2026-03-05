@@ -105,6 +105,7 @@ export type Database = {
         Row: {
           avatar_url: string | null
           bio: string | null
+          category: string | null
           created_at: string
           display_order: number | null
           github_url: string | null
@@ -117,6 +118,7 @@ export type Database = {
         Insert: {
           avatar_url?: string | null
           bio?: string | null
+          category?: string | null
           created_at?: string
           display_order?: number | null
           github_url?: string | null
@@ -129,6 +131,7 @@ export type Database = {
         Update: {
           avatar_url?: string | null
           bio?: string | null
+          category?: string | null
           created_at?: string
           display_order?: number | null
           github_url?: string | null

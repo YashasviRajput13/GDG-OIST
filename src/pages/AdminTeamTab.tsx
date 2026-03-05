@@ -17,10 +17,13 @@ interface TeamMember {
   github_url: string | null;
   twitter_url: string | null;
   display_order: number | null;
+  category: string | null;
 }
 
+const CATEGORIES = ["Tech", "Media", "Women in Tech", "Other"];
+
 const empty: Omit<TeamMember, "id"> = {
-  name: "", role: "", bio: "", avatar_url: "", linkedin_url: "", github_url: "", twitter_url: "", display_order: 0,
+  name: "", role: "", bio: "", avatar_url: "", linkedin_url: "", github_url: "", twitter_url: "", display_order: 0, category: "Tech",
 };
 
 const AdminTeamTab = () => {
@@ -44,7 +47,7 @@ const AdminTeamTab = () => {
     const { error } = await supabase.from("team_members").insert({
       name: form.name, role: form.role, bio: form.bio || null, avatar_url: form.avatar_url || null,
       linkedin_url: form.linkedin_url || null, github_url: form.github_url || null,
-      twitter_url: form.twitter_url || null, display_order: form.display_order ?? 0,
+      twitter_url: form.twitter_url || null, display_order: form.display_order ?? 0, category: form.category || "Tech",
     });
     if (error) { toast({ title: "Error", description: error.message, variant: "destructive" }); return; }
     toast({ title: "Member added" }); setAdding(false); setForm(empty); fetch();
@@ -55,7 +58,7 @@ const AdminTeamTab = () => {
     const { error } = await supabase.from("team_members").update({
       name: form.name, role: form.role, bio: form.bio || null, avatar_url: form.avatar_url || null,
       linkedin_url: form.linkedin_url || null, github_url: form.github_url || null,
-      twitter_url: form.twitter_url || null, display_order: form.display_order ?? 0,
+      twitter_url: form.twitter_url || null, display_order: form.display_order ?? 0, category: form.category || "Tech",
     }).eq("id", editing.id);
     if (error) { toast({ title: "Error", description: error.message, variant: "destructive" }); return; }
     toast({ title: "Member updated" }); setEditing(null); setForm(empty); fetch();
@@ -69,7 +72,7 @@ const AdminTeamTab = () => {
 
   const startEdit = (m: TeamMember) => {
     setEditing(m); setAdding(false);
-    setForm({ name: m.name, role: m.role, bio: m.bio, avatar_url: m.avatar_url, linkedin_url: m.linkedin_url, github_url: m.github_url, twitter_url: m.twitter_url, display_order: m.display_order });
+    setForm({ name: m.name, role: m.role, bio: m.bio, avatar_url: m.avatar_url, linkedin_url: m.linkedin_url, github_url: m.github_url, twitter_url: m.twitter_url, display_order: m.display_order, category: m.category });
   };
 
   const cancel = () => { setEditing(null); setAdding(false); setForm(empty); };
@@ -86,6 +89,9 @@ const AdminTeamTab = () => {
         <Input placeholder="GitHub URL" value={form.github_url || ""} onChange={(e) => set("github_url", e.target.value)} />
         <Input placeholder="Twitter URL" value={form.twitter_url || ""} onChange={(e) => set("twitter_url", e.target.value)} />
         <Input type="number" placeholder="Display Order" value={form.display_order ?? 0} onChange={(e) => set("display_order", parseInt(e.target.value) || 0)} />
+        <select className="flex h-10 w-full rounded-md border border-input bg-background px-3 py-2 text-sm" value={form.category || "Tech"} onChange={(e) => set("category", e.target.value)}>
+          {CATEGORIES.map(c => <option key={c} value={c}>{c}</option>)}
+        </select>
         <div className="md:col-span-2 flex gap-2">
           <Button onClick={editing ? handleUpdate : handleAdd}><Save className="h-4 w-4 mr-1" />{editing ? "Update" : "Save"}</Button>
           <Button variant="outline" onClick={cancel}><X className="h-4 w-4 mr-1" />Cancel</Button>
@@ -107,6 +113,7 @@ const AdminTeamTab = () => {
               <TableHead>Order</TableHead>
               <TableHead>Name</TableHead>
               <TableHead>Role</TableHead>
+              <TableHead>Category</TableHead>
               <TableHead>Avatar</TableHead>
               <TableHead className="text-right">Actions</TableHead>
             </TableRow>
@@ -117,6 +124,7 @@ const AdminTeamTab = () => {
                 <TableCell>{m.display_order}</TableCell>
                 <TableCell className="font-medium">{m.name}</TableCell>
                 <TableCell>{m.role}</TableCell>
+                <TableCell><span className="text-xs px-2 py-1 rounded-full bg-muted">{m.category || "Tech"}</span></TableCell>
                 <TableCell>{m.avatar_url ? <img src={m.avatar_url} alt={m.name} className="h-8 w-8 rounded-full object-cover" /> : "—"}</TableCell>
                 <TableCell className="text-right space-x-1">
                   <Button variant="ghost" size="icon" onClick={() => startEdit(m)}><Pencil className="h-4 w-4" /></Button>
@@ -125,7 +133,7 @@ const AdminTeamTab = () => {
               </TableRow>
             ))}
             {members.length === 0 && (
-              <TableRow><TableCell colSpan={5} className="text-center text-muted-foreground py-8">No team members yet</TableCell></TableRow>
+              <TableRow><TableCell colSpan={6} className="text-center text-muted-foreground py-8">No team members yet</TableCell></TableRow>
             )}
           </TableBody>
         </Table>
