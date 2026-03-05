@@ -58,7 +58,7 @@ const AdminTeamTab = () => {
     const { error } = await supabase.from("team_members").update({
       name: form.name, role: form.role, bio: form.bio || null, avatar_url: form.avatar_url || null,
       linkedin_url: form.linkedin_url || null, github_url: form.github_url || null,
-      twitter_url: form.twitter_url || null, display_order: form.display_order ?? 0,
+      twitter_url: form.twitter_url || null, display_order: form.display_order ?? 0, category: form.category || "Tech",
     }).eq("id", editing.id);
     if (error) { toast({ title: "Error", description: error.message, variant: "destructive" }); return; }
     toast({ title: "Member updated" }); setEditing(null); setForm(empty); fetch();
