@@ -113,6 +113,7 @@ const AdminTeamTab = () => {
               <TableHead>Order</TableHead>
               <TableHead>Name</TableHead>
               <TableHead>Role</TableHead>
+              <TableHead>Category</TableHead>
               <TableHead>Avatar</TableHead>
               <TableHead className="text-right">Actions</TableHead>
             </TableRow>
