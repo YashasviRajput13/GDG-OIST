@@ -1,9 +1,44 @@
-import { motion, useScroll, useTransform } from "framer-motion";
-import { ArrowDown, ChevronRight } from "lucide-react";
-import { useRef } from "react";
+import { motion, useScroll, useTransform, useInView, useMotionValue, useSpring, animate } from "framer-motion";
+import { ArrowDown, ChevronRight, Users, Calendar, Code, Trophy } from "lucide-react";
+import { useRef, useEffect, useState } from "react";
 import heroVideo from "@/assets/hero-video.mp4";
 import heroBg from "@/assets/hero-bg.jpg";
 import FloatingBlobs from "@/components/FloatingBlobs";
+
+const AnimatedCounter = ({ value, suffix = "", label, icon: Icon, delay = 0 }: { value: number; suffix?: string; label: string; icon: React.ElementType; delay?: number }) => {
+  const ref = useRef(null);
+  const isInView = useInView(ref, { once: true });
+  const [display, setDisplay] = useState(0);
+
+  useEffect(() => {
+    if (!isInView) return;
+    const timeout = setTimeout(() => {
+      const controls = animate(0, value, {
+        duration: 2,
+        ease: [0.16, 1, 0.3, 1],
+        onUpdate: (v) => setDisplay(Math.round(v)),
+      });
+      return () => controls.stop();
+    }, delay * 1000);
+    return () => clearTimeout(timeout);
+  }, [isInView, value, delay]);
+
+  return (
+    <motion.div
+      ref={ref}
+      initial={{ opacity: 0, y: 30 }}
+      animate={isInView ? { opacity: 1, y: 0 } : {}}
+      transition={{ duration: 0.6, delay, ease: [0.16, 1, 0.3, 1] }}
+      className="flex flex-col items-center gap-1.5 px-6"
+    >
+      <Icon className="text-primary/70 mb-1" size={20} />
+      <span className="font-display text-3xl md:text-4xl font-bold text-foreground tabular-nums">
+        {display}{suffix}
+      </span>
+      <span className="text-xs md:text-sm text-foreground/50 font-medium tracking-wide uppercase">{label}</span>
+    </motion.div>
+  );
+};
 
 const wordVariants = {
   hidden: { opacity: 0, y: 80, rotateX: 90 },
