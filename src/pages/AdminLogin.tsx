@@ -5,7 +5,7 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Card, CardContent, CardHeader, CardTitle, CardDescription } from "@/components/ui/card";
 import { useToast } from "@/hooks/use-toast";
-import { LogIn, Mail, Lock } from "lucide-react";
+import { LogIn, Mail, Lock, ArrowLeft } from "lucide-react";
 
 const AdminLogin = () => {
   const [email, setEmail] = useState("");
