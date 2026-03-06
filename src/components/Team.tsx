@@ -91,7 +91,7 @@ const Team = () => {
           initial={{ opacity: 0, y: 20 }}
           animate={isInView ? { opacity: 1, y: 0 } : {}}
           transition={{ duration: 0.6, delay: 0.4 }}
-          className="flex flex-wrap justify-center gap-3 mb-14"
+          className="flex flex-wrap justify-center gap-2.5 mb-14"
         >
           {["All", ...availableCategories].map((cat, i) => {
             const isActive = activeCategory === cat;
