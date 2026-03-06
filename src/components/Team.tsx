@@ -69,7 +69,7 @@ const Team = () => {
             transition={{ duration: 0.6 }}
             className="text-sm font-medium tracking-widest uppercase text-primary/70 mb-4"
           >
-            Our Team
+            {subtitle}
           </motion.p>
           <h2 className="font-display text-4xl md:text-5xl lg:text-6xl font-bold text-foreground">
             {headingWords.map((word, i) => (
