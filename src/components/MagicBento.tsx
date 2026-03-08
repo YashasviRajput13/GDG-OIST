@@ -645,7 +645,7 @@ const MagicBento = ({
 
                                 const handleMouseEnter = () => {
                                     if (shouldDisableAnimations) return;
-                                    playSound('hover');
+                                    
                                 };
 
                                 const handleClick = (e: MouseEvent) => {
