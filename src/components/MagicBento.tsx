@@ -195,7 +195,6 @@ const ParticleCard = ({
 
         const handleMouseEnter = () => {
             isHoveredRef.current = true;
-            playSound('hover');
             animateParticles();
 
             if (enableTilt) {
