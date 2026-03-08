@@ -9,9 +9,9 @@ import pillarOpensource from "@/assets/pillar-opensource.png";
 
 const stats = [
   { icon: Users, value: "25+", label: "Members", color: "bg-google-blue", textColor: "text-google-blue" },
-  { icon: CalendarDays, value: "10+", label: "Events Hosted", color: "bg-google-red", textColor: "text-google-red" },
-  { icon: Wrench, value: "5+", label: "Workshops", color: "bg-google-yellow", textColor: "text-google-yellow" },
-  { icon: Code2, value: "3+", label: "Hackathons", color: "bg-google-green", textColor: "text-google-green" },
+  { icon: CalendarDays, label: "Events Hosted", color: "bg-google-red", textColor: "text-google-red" },
+  { icon: Wrench, label: "Workshops", color: "bg-google-yellow", textColor: "text-google-yellow" },
+  { icon: Code2, label: "Hackathons", color: "bg-google-green", textColor: "text-google-green" },
 ];
 
 const pillars = [
@@ -118,8 +118,8 @@ const About = () => {
             >
               <div className={`absolute top-0 left-0 w-full h-1 ${stat.color} transition-all duration-300 group-hover:h-1.5`} />
               <stat.icon size={28} className={`${stat.textColor} mx-auto mb-3 group-hover:scale-110 transition-transform`} />
-              <p className="font-display text-3xl md:text-4xl font-bold text-foreground mb-1">{stat.value}</p>
-              <p className="text-sm text-muted-foreground">{stat.label}</p>
+              {stat.value && <p className="font-display text-3xl md:text-4xl font-bold text-foreground mb-1">{stat.value}</p>}
+              <p className={`${stat.value ? "text-sm text-muted-foreground" : "font-display text-base md:text-lg font-semibold text-foreground"}`}>{stat.label}</p>
             </motion.div>
           ))}
         </div>
