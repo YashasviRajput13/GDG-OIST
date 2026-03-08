@@ -166,7 +166,14 @@ function MenuItem({
             >
                 {text}
             </a>
-            <div className="marquee" ref={marqueeRef} style={{ backgroundColor: marqueeBgColor }}>
+            <div className="marquee" ref={marqueeRef} style={{
+                backgroundColor: marqueeBgColor,
+                ...(image && {
+                    backgroundImage: `linear-gradient(rgba(0,0,0,0.5), rgba(0,0,0,0.5)), url(${image})`,
+                    backgroundSize: 'cover',
+                    backgroundPosition: 'center',
+                }),
+            }}>
                 <div className="marquee__inner-wrap">
                     <div className="marquee__inner" ref={marqueeInnerRef} aria-hidden="true">
                         {[...Array(repetitions)].map((_, idx) => (
