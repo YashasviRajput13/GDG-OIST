@@ -2,6 +2,7 @@ import { motion, useInView } from "framer-motion";
 import { useRef, useEffect, useState } from "react";
 import { Users, CalendarDays, Wrench, Code2 } from "lucide-react";
 import { supabase } from "@/integrations/supabase/client";
+import { toDirectImageUrl } from "@/lib/driveUrl";
 import FlowingMenu from "./FlowingMenu";
 import CircularGallery from "./CircularGallery";
 import milestoneIo from "@/assets/milestone-io.jpg";
@@ -65,7 +66,7 @@ const Achievements = () => {
         .select("*")
         .order("display_order", { ascending: true });
       if (data && data.length > 0) {
-        setGalleryItems(data.map((h) => ({ image: h.image_url, text: h.label })));
+        setGalleryItems(data.map((h) => ({ image: toDirectImageUrl(h.image_url), text: h.label })));
       }
     };
     fetchHighlights();

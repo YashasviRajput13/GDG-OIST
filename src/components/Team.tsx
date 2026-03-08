@@ -1,6 +1,7 @@
 import { motion, useInView, useScroll, useTransform } from "framer-motion";
 import { useRef, useEffect, useState } from "react";
 import { supabase } from "@/integrations/supabase/client";
+import { toDirectImageUrl } from "@/lib/driveUrl";
 import ProfileCard from "./ProfileCard";
 
 interface TeamMember {
@@ -124,7 +125,7 @@ const Team = () => {
             return (
               <ProfileCard
                 key={m.id}
-                avatarUrl={m.avatar_url || '/placeholder.svg'}
+                avatarUrl={toDirectImageUrl(m.avatar_url || '/placeholder.svg')}
                 name={m.name}
                 title={m.role}
                 handle={m.name.toLowerCase().replace(/\s+/g, '')}
