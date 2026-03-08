@@ -109,7 +109,7 @@ const Events = () => {
               {event.image_url && (
                 <div className="w-full h-48 overflow-hidden">
                   <img
-                    src={event.image_url}
+                    src={toDirectImageUrl(event.image_url)}
                     alt={event.title}
                     className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
                     loading="lazy"
