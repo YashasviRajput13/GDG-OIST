@@ -127,7 +127,7 @@ function MenuItem({
     }, [text, image, repetitions, speed]);
 
     const handleMouseEnter = (ev: React.MouseEvent<HTMLAnchorElement>) => {
-        playSound('hover');
+        
         if (!itemRef.current || !marqueeRef.current || !marqueeInnerRef.current) return;
         const rect = itemRef.current.getBoundingClientRect();
         const x = ev.clientX - rect.left;
