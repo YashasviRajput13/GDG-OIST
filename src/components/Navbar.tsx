@@ -91,17 +91,6 @@ const Navbar = () => {
             />
 
             <div className="flex items-center gap-2">
-              {/* Sound Toggle */}
-              {mounted && (
-                <button
-                  onClick={handleToggleMute}
-                  className="p-2 rounded-full border border-border bg-muted/60 backdrop-blur-sm hover:bg-muted transition-colors"
-                  aria-label={isMuted ? "Unmute sounds" : "Mute sounds"}
-                  onMouseEnter={() => playSound('hover')}
-                >
-                  {isMuted ? <VolumeX size={18} /> : <Volume2 size={18} />}
-                </button>
-              )}
 
               {/* Dark mode toggle - pill switch */}
               {mounted && (
