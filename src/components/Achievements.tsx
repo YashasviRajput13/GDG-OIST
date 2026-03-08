@@ -20,22 +20,22 @@ const milestoneItems = [
   {
     text: "Google I/O Extended",
     link: "#",
-    image: "https://developers.google.com/static/community/gdg/images/logo_GDG_color.png",
+    image: milestoneIo,
   },
   {
     text: "Solution Challenge",
     link: "#",
-    image: "https://developers.google.com/static/community/gdg/images/logo_GDG_color.png",
+    image: milestoneSolution,
   },
   {
     text: "DevFest 2025",
     link: "#",
-    image: "https://developers.google.com/static/community/gdg/images/logo_GDG_color.png",
+    image: milestoneDevfest,
   },
   {
     text: "Community Impact",
     link: "#",
-    image: "https://developers.google.com/static/community/gdg/images/logo_GDG_color.png",
+    image: milestoneCommunity,
   },
 ];
 
