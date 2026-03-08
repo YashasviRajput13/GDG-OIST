@@ -69,7 +69,7 @@ function MenuItem({
     const marqueeInnerRef = useRef<HTMLDivElement>(null);
     const animationRef = useRef<gsap.core.Tween | null>(null);
     const [repetitions, setRepetitions] = useState(4);
-    const { playSound } = useSound();
+    
 
     const animationDefaults = { duration: 0.6, ease: 'expo' };
 
