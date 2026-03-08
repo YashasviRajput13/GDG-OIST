@@ -1,6 +1,7 @@
 import { motion, useInView, AnimatePresence } from "framer-motion";
 import { useRef, useEffect, useState } from "react";
 import { supabase } from "@/integrations/supabase/client";
+import { toDirectImageUrl } from "@/lib/driveUrl";
 import { X } from "lucide-react";
 
 interface GalleryItem {
