@@ -243,6 +243,19 @@ export type Database = {
         }
         Returns: boolean
       }
+      use_invite_token: {
+        Args: { _token: string; _user_id: string }
+        Returns: boolean
+      }
+      validate_invite_token: {
+        Args: { _token: string }
+        Returns: {
+          email: string
+          expires_at: string
+          id: string
+          used: boolean
+        }[]
+      }
     }
     Enums: {
       app_role: "admin" | "user"
