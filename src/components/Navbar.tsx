@@ -139,7 +139,6 @@ const Navbar = () => {
             )}
             <button
               onClick={() => {
-                playSound('click');
                 setIsOpen(!isOpen);
               }}
               className="text-foreground"
