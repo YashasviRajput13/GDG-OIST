@@ -3,6 +3,10 @@ import { useRef } from "react";
 import { Star, Users, Calendar, Code2 } from "lucide-react";
 import FlowingMenu from "./FlowingMenu";
 import CircularGallery from "./CircularGallery";
+import milestoneIo from "@/assets/milestone-io.jpg";
+import milestoneSolution from "@/assets/milestone-solution.jpg";
+import milestoneDevfest from "@/assets/milestone-devfest.jpg";
+import milestoneCommunity from "@/assets/milestone-community.jpg";
 
 const numbers = [
   { icon: Users, value: "500+", label: "Community Members", color: "text-google-blue" },
