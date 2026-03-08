@@ -108,7 +108,7 @@ const AdminGalleryTab = () => {
                     </TableCell>
                   ) : (
                     <>
-                      <TableCell><img src={item.src} alt={item.alt} className="w-12 h-12 rounded-lg object-cover" /></TableCell>
+                      <TableCell><img src={toDirectImageUrl(item.src)} alt={item.alt} className="w-12 h-12 rounded-lg object-cover" /></TableCell>
                       <TableCell className="font-medium text-foreground">{item.alt}</TableCell>
                       <TableCell className="text-muted-foreground">{item.caption || "—"}</TableCell>
                       <TableCell className="text-right">
