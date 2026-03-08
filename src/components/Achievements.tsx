@@ -106,13 +106,14 @@ const Achievements = () => {
               initial={{ opacity: 0, y: 30 }}
               animate={statsInView ? { opacity: 1, y: 0 } : {}}
               transition={{ duration: 0.6, delay: i * 0.1, ease: [0.16, 1, 0.3, 1] as const }}
-              className="text-center p-6 rounded-3xl bg-background border border-border hover:shadow-lg transition-shadow group"
+              className="relative text-center p-6 rounded-2xl bg-background border border-border hover:shadow-lg transition-shadow group overflow-hidden"
             >
-              <num.icon size={22} className={`${num.color} mx-auto mb-3 group-hover:scale-110 transition-transform`} />
-              <p className={`font-display text-2xl md:text-3xl font-bold ${num.color} mb-1`}>
-                {num.value}
+              {/* Colored top bar */}
+              <div className={`absolute top-0 left-0 right-0 h-1 ${num.bar}`} />
+              <num.icon size={28} className={`${num.color} mx-auto mb-3 group-hover:scale-110 transition-transform`} />
+              <p className="font-display text-base md:text-lg font-semibold text-foreground">
+                {num.label}
               </p>
-              <p className="text-xs text-muted-foreground font-medium">{num.label}</p>
             </motion.div>
           ))}
         </div>
