@@ -96,7 +96,6 @@ const Navbar = () => {
               {mounted && (
                 <button
                   onClick={toggleTheme}
-                  onMouseEnter={() => playSound('hover')}
                   className="relative w-16 h-8 rounded-full border border-border bg-muted/60 backdrop-blur-sm transition-colors duration-300 focus:outline-none"
                   aria-label="Toggle dark mode"
                 >
