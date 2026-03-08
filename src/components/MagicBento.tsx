@@ -112,7 +112,6 @@ const ParticleCard = ({
     enableMagnetism = false
 }: ParticleCardProps) => {
     const cardRef = useRef<HTMLDivElement>(null);
-    const { playSound } = useSound();
     const particlesRef = useRef<HTMLElement[]>([]);
     const timeoutsRef = useRef<NodeJS.Timeout[]>([]);
     const isHoveredRef = useRef(false);
