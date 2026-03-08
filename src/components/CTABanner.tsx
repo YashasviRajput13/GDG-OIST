@@ -94,7 +94,7 @@ const CTABanner = () => {
               href="#contact"
               whileHover={{ scale: 1.05, boxShadow: "0 20px 50px -10px rgba(0,0,0,0.35)" }}
               whileTap={{ scale: 0.97 }}
-              className="group px-10 py-4 rounded-full bg-white text-foreground font-bold text-sm flex items-center gap-2 transition-all shadow-xl"
+              className="group px-10 py-4 rounded-full bg-primary text-primary-foreground font-bold text-sm flex items-center gap-2 transition-all shadow-xl"
             >
               Get Started Today
               <ArrowRight size={16} className="group-hover:translate-x-1 transition-transform" />
