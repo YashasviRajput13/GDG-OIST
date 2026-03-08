@@ -5,6 +5,7 @@ import Hero from "@/components/Hero";
 import TechMarquee from "@/components/TechMarquee";
 import About from "@/components/About";
 import Events from "@/components/Events";
+import Testimonials from "@/components/Testimonials";
 import Gallery from "@/components/Gallery";
 import Achievements from "@/components/Achievements";
 import Team from "@/components/Team";
