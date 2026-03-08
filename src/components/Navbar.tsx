@@ -1,9 +1,8 @@
 import { useState, useEffect, useMemo } from "react";
 import { motion, AnimatePresence } from "framer-motion";
-import { Menu, X, Sun, Moon, Volume2, VolumeX } from "lucide-react";
+import { Menu, X, Sun, Moon } from "lucide-react";
 import { useTheme } from "next-themes";
 import GooeyNav from "@/components/GooeyNav";
-import { useSound } from "@/hooks/useSound";
 
 const navLinks = [
   { label: "Home", href: "#home" },
