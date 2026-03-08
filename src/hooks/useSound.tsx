@@ -10,11 +10,46 @@ interface SoundContextType {
 
 const SoundContext = createContext<SoundContextType | undefined>(undefined);
 
-const SOUND_URLS = {
-    hover: 'https://cdn.pixabay.com/audio/2022/03/24/audio_805cb7e4c8.mp3', // Soft blip
-    click: 'https://cdn.pixabay.com/audio/2022/03/10/audio_d8dbe06c94.mp3', // Light tap
-    success: 'https://cdn.pixabay.com/audio/2021/08/04/audio_c507e0c80a.mp3', // Subtle chime
-    transition: 'https://cdn.pixabay.com/audio/2022/03/15/audio_4d85046c0a.mp3', // Soft whoosh
+// Generate SFX using Web Audio API (no external URLs needed)
+const createSFX = (type: 'hover' | 'click' | 'success' | 'transition') => {
+    const ctx = new (window.AudioContext || (window as any).webkitAudioContext)();
+    const osc = ctx.createOscillator();
+    const gain = ctx.createGain();
+    osc.connect(gain);
+    gain.connect(ctx.destination);
+    gain.gain.value = 0.08;
+
+    switch (type) {
+        case 'hover':
+            osc.frequency.value = 800;
+            osc.type = 'sine';
+            gain.gain.exponentialRampToValueAtTime(0.001, ctx.currentTime + 0.08);
+            osc.start(); osc.stop(ctx.currentTime + 0.08);
+            break;
+        case 'click':
+            osc.frequency.value = 600;
+            osc.type = 'square';
+            gain.gain.value = 0.05;
+            gain.gain.exponentialRampToValueAtTime(0.001, ctx.currentTime + 0.06);
+            osc.start(); osc.stop(ctx.currentTime + 0.06);
+            break;
+        case 'success':
+            osc.frequency.value = 523;
+            osc.type = 'sine';
+            osc.frequency.setValueAtTime(523, ctx.currentTime);
+            osc.frequency.setValueAtTime(659, ctx.currentTime + 0.1);
+            osc.frequency.setValueAtTime(784, ctx.currentTime + 0.2);
+            gain.gain.exponentialRampToValueAtTime(0.001, ctx.currentTime + 0.35);
+            osc.start(); osc.stop(ctx.currentTime + 0.35);
+            break;
+        case 'transition':
+            osc.frequency.value = 300;
+            osc.type = 'sine';
+            osc.frequency.exponentialRampToValueAtTime(900, ctx.currentTime + 0.15);
+            gain.gain.exponentialRampToValueAtTime(0.001, ctx.currentTime + 0.2);
+            osc.start(); osc.stop(ctx.currentTime + 0.2);
+            break;
+    }
 };
 
 const MUSIC_URL = 'https://cdn.pixabay.com/audio/2022/02/22/audio_d1718ab41b.mp3'; // Calm ambient loop
