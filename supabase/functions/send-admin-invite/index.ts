@@ -13,9 +13,7 @@ Deno.serve(async (req) => {
 
   try {
     const authHeader = req.headers.get("Authorization");
-    console.log("Auth header present:", !!authHeader);
-    
-    if (!authHeader) {
+    if (!authHeader?.startsWith("Bearer ")) {
       return new Response(JSON.stringify({ error: "Not authorized" }), {
         status: 401,
         headers: { ...corsHeaders, "Content-Type": "application/json" },
@@ -23,37 +21,32 @@ Deno.serve(async (req) => {
     }
 
     const supabaseUrl = Deno.env.get("SUPABASE_URL")!;
-    const supabaseAnonKey = Deno.env.get("SUPABASE_PUBLISHABLE_KEY") || Deno.env.get("SUPABASE_ANON_KEY") || "";
     const supabaseServiceKey = Deno.env.get("SUPABASE_SERVICE_ROLE_KEY")!;
 
-    console.log("URL present:", !!supabaseUrl, "Anon present:", !!supabaseAnonKey, "Service present:", !!supabaseServiceKey);
+    // Use service role client for all operations
+    const adminClient = createClient(supabaseUrl, supabaseServiceKey);
 
-    // Verify the caller is an admin using their JWT
-    const userClient = createClient(supabaseUrl, supabaseAnonKey, {
-      global: { headers: { Authorization: authHeader } },
-    });
+    // Verify user via token
+    const token = authHeader.replace("Bearer ", "");
+    const { data: { user }, error: userError } = await adminClient.auth.getUser(token);
 
-    const { data: { user }, error: userError } = await userClient.auth.getUser();
-    console.log("User:", user?.id, "Error:", userError?.message);
-    
     if (userError || !user) {
+      console.error("Auth error:", userError?.message);
       return new Response(JSON.stringify({ error: "Invalid session" }), {
         status: 401,
         headers: { ...corsHeaders, "Content-Type": "application/json" },
       });
     }
 
-    // Verify admin role using service role client
-    const adminClient = createClient(supabaseUrl, supabaseServiceKey);
+    // Verify admin role
     const { data: roles, error: roleError } = await adminClient
       .from("user_roles")
       .select("role")
       .eq("user_id", user.id)
       .eq("role", "admin");
 
-    console.log("Roles:", roles, "Role error:", roleError?.message);
-
-    if (!roles || roles.length === 0) {
+    if (roleError || !roles || roles.length === 0) {
+      console.error("Role check failed:", roleError?.message, "roles:", roles);
       return new Response(JSON.stringify({ error: "Admin access required" }), {
         status: 403,
         headers: { ...corsHeaders, "Content-Type": "application/json" },
@@ -62,8 +55,6 @@ Deno.serve(async (req) => {
 
     const body = await req.json();
     const email = body?.email;
-    console.log("Email:", email);
-    
     if (!email || typeof email !== "string") {
       return new Response(JSON.stringify({ error: "Email is required" }), {
         status: 400,
@@ -72,7 +63,7 @@ Deno.serve(async (req) => {
     }
 
     // Check for existing unused invite
-    const { data: existing, error: existErr } = await adminClient
+    const { data: existing } = await adminClient
       .from("admin_invites")
       .select("id, token")
       .eq("email", email.toLowerCase().trim())
@@ -80,12 +71,10 @@ Deno.serve(async (req) => {
       .gt("expires_at", new Date().toISOString())
       .limit(1);
 
-    console.log("Existing invites:", existing, "Error:", existErr?.message);
-
-    let token: string;
+    let inviteToken: string;
 
     if (existing && existing.length > 0) {
-      token = existing[0].token;
+      inviteToken = existing[0].token;
     } else {
       const { data: invite, error: insertError } = await adminClient
         .from("admin_invites")
@@ -93,19 +82,18 @@ Deno.serve(async (req) => {
         .select("token")
         .single();
 
-      console.log("Insert result:", invite, "Error:", insertError?.message);
-
       if (insertError || !invite) {
-        return new Response(JSON.stringify({ error: "Failed to create invite", detail: insertError?.message }), {
+        console.error("Insert error:", insertError?.message);
+        return new Response(JSON.stringify({ error: "Failed to create invite" }), {
           status: 500,
           headers: { ...corsHeaders, "Content-Type": "application/json" },
         });
       }
-      token = invite.token;
+      inviteToken = invite.token;
     }
 
     const origin = req.headers.get("origin") || req.headers.get("referer")?.replace(/\/$/, "") || "";
-    const inviteLink = `${origin}/admin/signup?token=${token}`;
+    const inviteLink = `${origin}/admin/signup?token=${inviteToken}`;
 
     return new Response(
       JSON.stringify({ success: true, inviteLink, message: `Invite created for ${email}. Share this link with them.` }),
@@ -113,7 +101,7 @@ Deno.serve(async (req) => {
     );
   } catch (err) {
     console.error("Unhandled error:", err);
-    return new Response(JSON.stringify({ error: "Internal server error", detail: String(err) }), {
+    return new Response(JSON.stringify({ error: "Internal server error" }), {
       status: 500,
       headers: { ...corsHeaders, "Content-Type": "application/json" },
     });
