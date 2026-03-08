@@ -103,11 +103,11 @@ const Footer = () => {
             <span>Made with <span className="google-dot-red">♥</span> in Bhopal</span>
             <Link
               to="/admin/login"
-              className="group relative px-3 py-1 rounded-full border border-transparent opacity-50 hover:opacity-100 transition-all duration-300 hover:border-border hover:bg-muted/50 hover:shadow-sm"
+              className="group relative px-4 py-1.5 rounded-full border border-border bg-muted/60 hover:bg-primary/10 hover:border-primary/40 transition-all duration-300 hover:shadow-md hover:shadow-primary/10"
             >
-              <span className="relative z-10 flex items-center gap-1.5">
-                <span className="w-1.5 h-1.5 rounded-full bg-google-green opacity-0 group-hover:opacity-100 transition-opacity duration-300 animate-pulse" />
-                Admin
+              <span className="relative z-10 flex items-center gap-2 text-muted-foreground group-hover:text-primary transition-colors">
+                <span className="w-2 h-2 rounded-full bg-google-green animate-pulse" />
+                <span className="text-xs font-semibold tracking-wide uppercase">Admin</span>
               </span>
             </Link>
           </div>
