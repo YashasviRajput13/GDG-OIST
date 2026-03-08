@@ -1,6 +1,6 @@
 import { motion, useInView } from "framer-motion";
 import { useRef } from "react";
-import { Star, Users, Calendar, Code2 } from "lucide-react";
+import { TrendingUp, BookOpen, Network, Trophy } from "lucide-react";
 import FlowingMenu from "./FlowingMenu";
 import CircularGallery from "./CircularGallery";
 import milestoneIo from "@/assets/milestone-io.jpg";
@@ -9,10 +9,10 @@ import milestoneDevfest from "@/assets/milestone-devfest.jpg";
 import milestoneCommunity from "@/assets/milestone-community.jpg";
 
 const numbers = [
-  { icon: Users, value: "500+", label: "Community Members", color: "text-google-blue" },
-  { icon: Calendar, value: "50+", label: "Events Hosted", color: "text-google-red" },
-  { icon: Code2, value: "20+", label: "Workshops Run", color: "text-google-yellow" },
-  { icon: Star, value: "10+", label: "Hackathons Held", color: "text-google-green" },
+  { icon: TrendingUp, value: "Growing", label: "Community", color: "text-google-blue" },
+  { icon: BookOpen, value: "Learning", label: "Sessions", color: "text-google-red" },
+  { icon: Network, value: "Developer", label: "Networking", color: "text-google-yellow" },
+  { icon: Trophy, value: "Hackathon", label: "Culture", color: "text-google-green" },
 ];
 
 // Milestone items for FlowingMenu
@@ -107,7 +107,7 @@ const Achievements = () => {
               className="text-center p-6 rounded-3xl bg-background border border-border hover:shadow-lg transition-shadow group"
             >
               <num.icon size={22} className={`${num.color} mx-auto mb-3 group-hover:scale-110 transition-transform`} />
-              <p className={`font-display text-3xl md:text-4xl font-bold ${num.color} mb-1`}>
+              <p className={`font-display text-2xl md:text-3xl font-bold ${num.color} mb-1`}>
                 {num.value}
               </p>
               <p className="text-xs text-muted-foreground font-medium">{num.label}</p>
