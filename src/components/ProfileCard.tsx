@@ -38,7 +38,7 @@ const round = (v: number, precision = 3) => parseFloat(v.toFixed(precision));
 const adjust = (v: number, fMin: number, fMax: number, tMin: number, tMax: number) =>
     round(tMin + ((tMax - tMin) * (v - fMin)) / (fMax - fMin));
 
-import { useSound } from '@/hooks/useSound';
+
 
 const ProfileCardComponent: React.FC<ProfileCardProps> = ({
     avatarUrl = '',
