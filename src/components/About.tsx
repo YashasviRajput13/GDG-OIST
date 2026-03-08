@@ -1,6 +1,6 @@
 import { motion, useInView, useScroll, useTransform } from "framer-motion";
 import { useRef } from "react";
-import { ArrowRight } from "lucide-react";
+import { ArrowRight, Users, CalendarDays, Wrench, Code2 } from "lucide-react";
 import FloatingBlobs from "@/components/FloatingBlobs";
 import pillarLearning from "@/assets/pillar-learning.png";
 import pillarCommunity from "@/assets/pillar-community.png";
@@ -8,10 +8,10 @@ import pillarInnovation from "@/assets/pillar-innovation.png";
 import pillarOpensource from "@/assets/pillar-opensource.png";
 
 const stats = [
-  { value: "500+", label: "Members", color: "bg-google-blue" },
-  { value: "50+", label: "Events Hosted", color: "bg-google-red" },
-  { value: "20+", label: "Workshops", color: "bg-google-yellow" },
-  { value: "10+", label: "Hackathons", color: "bg-google-green" },
+  { icon: Users, label: "Growing Community", color: "bg-google-blue", textColor: "text-google-blue" },
+  { icon: CalendarDays, label: "Events Hosted", color: "bg-google-red", textColor: "text-google-red" },
+  { icon: Wrench, label: "Hands-on Workshops", color: "bg-google-yellow", textColor: "text-google-yellow" },
+  { icon: Code2, label: "Hackathons", color: "bg-google-green", textColor: "text-google-green" },
 ];
 
 const pillars = [
@@ -113,19 +113,12 @@ const About = () => {
               animate={isInView ? { opacity: 1, y: 0, rotateY: 0 } : {}}
               transition={{ duration: 0.7, delay: 0.9 + i * 0.12, ease: [0.16, 1, 0.3, 1] }}
               whileHover={{ y: -8, scale: 1.03, rotateY: 5 }}
-              className="relative p-8 rounded-2xl bg-background border border-border overflow-hidden group hover:shadow-xl transition-shadow duration-500"
+              className="relative p-6 rounded-2xl bg-background border border-border overflow-hidden group hover:shadow-xl transition-shadow duration-500 text-center"
               style={{ transformStyle: "preserve-3d" }}
             >
               <div className={`absolute top-0 left-0 w-full h-1 ${stat.color} transition-all duration-300 group-hover:h-1.5`} />
-              <motion.p
-                initial={{ scale: 0.5, opacity: 0 }}
-                animate={isInView ? { scale: 1, opacity: 1 } : {}}
-                transition={{ duration: 0.5, delay: 1.1 + i * 0.12, type: "spring", stiffness: 200 }}
-                className="font-display text-4xl md:text-5xl font-bold text-foreground mb-1"
-              >
-                {stat.value}
-              </motion.p>
-              <p className="text-sm text-muted-foreground">{stat.label}</p>
+              <stat.icon size={28} className={`${stat.textColor} mx-auto mb-3 group-hover:scale-110 transition-transform`} />
+              <p className="font-display text-base md:text-lg font-semibold text-foreground">{stat.label}</p>
             </motion.div>
           ))}
         </div>
