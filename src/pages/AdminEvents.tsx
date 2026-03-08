@@ -5,7 +5,7 @@ import { Input } from "@/components/ui/input";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";
 import { useToast } from "@/hooks/use-toast";
-import { Plus, Pencil, Trash2, Save, X, Calendar, Star } from "lucide-react";
+import { Plus, Pencil, Trash2, Save, X, Calendar, Star, Link, Check } from "lucide-react";
 import { Switch } from "@/components/ui/switch";
 
 interface EventItem {
@@ -48,6 +48,8 @@ const AdminEvents = () => {
   const [editingId, setEditingId] = useState<string | null>(null);
   const [form, setForm] = useState<EventForm>(emptyForm);
   const [isAdding, setIsAdding] = useState(false);
+  const [editingLinkId, setEditingLinkId] = useState<string | null>(null);
+  const [linkValue, setLinkValue] = useState("");
   const { toast } = useToast();
 
   useEffect(() => {
@@ -144,6 +146,17 @@ const AdminEvents = () => {
     setForm(emptyForm);
   };
 
+  const handleQuickLinkSave = async (id: string) => {
+    const { error } = await supabase.from("events").update({ registration_link: linkValue.trim() || null }).eq("id", id);
+    if (error) {
+      toast({ title: "Error", description: error.message, variant: "destructive" });
+      return;
+    }
+    toast({ title: "Registration link updated!" });
+    setEditingLinkId(null);
+    fetchItems();
+  };
+
   const EventFormFields = () => (
     <div className="space-y-3">
       <Input placeholder="Title *" value={form.title} onChange={(e) => setForm({ ...form, title: e.target.value })} />
@@ -194,6 +207,7 @@ const AdminEvents = () => {
                 <TableHead>Title</TableHead>
                 <TableHead>Type</TableHead>
                 <TableHead>Date</TableHead>
+                <TableHead>Registration Link</TableHead>
                 <TableHead>Featured</TableHead>
                 <TableHead className="w-24 text-right">Actions</TableHead>
               </TableRow>
@@ -202,7 +216,7 @@ const AdminEvents = () => {
               {items.map((item) => (
                 <TableRow key={item.id}>
                   {editingId === item.id ? (
-                    <TableCell colSpan={5}>
+                    <TableCell colSpan={6}>
                       <EventFormFields />
                       <div className="flex gap-2 mt-4">
                         <Button size="sm" onClick={() => handleUpdate(item.id)}><Save className="h-4 w-4 mr-1" /> Save</Button>
@@ -215,6 +229,37 @@ const AdminEvents = () => {
                       <TableCell className="text-muted-foreground capitalize">{item.event_type || "—"}</TableCell>
                       <TableCell className="text-muted-foreground">
                         {item.event_date ? new Date(item.event_date).toLocaleDateString() : "—"}
+                      </TableCell>
+                      <TableCell>
+                        {editingLinkId === item.id ? (
+                          <div className="flex items-center gap-1">
+                            <Input
+                              value={linkValue}
+                              onChange={(e) => setLinkValue(e.target.value)}
+                              placeholder="https://..."
+                              className="h-8 text-xs"
+                            />
+                            <Button variant="ghost" size="icon" className="h-8 w-8" onClick={() => handleQuickLinkSave(item.id)}>
+                              <Check className="h-3.5 w-3.5 text-green-500" />
+                            </Button>
+                            <Button variant="ghost" size="icon" className="h-8 w-8" onClick={() => setEditingLinkId(null)}>
+                              <X className="h-3.5 w-3.5" />
+                            </Button>
+                          </div>
+                        ) : (
+                          <div className="flex items-center gap-1">
+                            {item.registration_link ? (
+                              <a href={item.registration_link} target="_blank" rel="noopener noreferrer" className="text-xs text-primary hover:underline truncate max-w-[150px]">
+                                {item.registration_link}
+                              </a>
+                            ) : (
+                              <span className="text-xs text-muted-foreground">—</span>
+                            )}
+                            <Button variant="ghost" size="icon" className="h-7 w-7" onClick={() => { setEditingLinkId(item.id); setLinkValue(item.registration_link || ""); }}>
+                              <Link className="h-3.5 w-3.5" />
+                            </Button>
+                          </div>
+                        )}
                       </TableCell>
                       <TableCell>
                         {item.is_featured && <Star className="h-4 w-4 text-yellow-500 fill-yellow-500" />}
