@@ -80,6 +80,9 @@ const AdminDashboard = () => {
           <TabsContent value="testimonials">
             <AdminTestimonialsTab />
           </TabsContent>
+          <TabsContent value="highlights">
+            <AdminHighlightsTab />
+          </TabsContent>
           <TabsContent value="invite">
             <AdminInvite />
           </TabsContent>

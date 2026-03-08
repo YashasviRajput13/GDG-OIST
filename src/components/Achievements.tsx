@@ -56,6 +56,20 @@ const Achievements = () => {
   const statsRef = useRef(null);
   const isInView = useInView(ref, { once: true, margin: "-100px" });
   const statsInView = useInView(statsRef, { once: true, margin: "-80px" });
+  const [galleryItems, setGalleryItems] = useState(fallbackGalleryItems);
+
+  useEffect(() => {
+    const fetchHighlights = async () => {
+      const { data } = await supabase
+        .from("event_highlights")
+        .select("*")
+        .order("display_order", { ascending: true });
+      if (data && data.length > 0) {
+        setGalleryItems(data.map((h) => ({ image: h.image_url, text: h.label })));
+      }
+    };
+    fetchHighlights();
+  }, []);
 
   const headingWords = ["Our", "milestones"];
 
