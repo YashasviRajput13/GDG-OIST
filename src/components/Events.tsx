@@ -1,6 +1,7 @@
 import { useEffect, useState } from "react";
 import { motion, useInView } from "framer-motion";
 import { supabase } from "@/integrations/supabase/client";
+import { toDirectImageUrl } from "@/lib/driveUrl";
 import { Calendar, MapPin, ArrowRight, Sparkles } from "lucide-react";
 import { format } from "date-fns";
 
