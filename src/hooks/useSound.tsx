@@ -60,22 +60,14 @@ export const SoundProvider: React.FC<{ children: React.ReactNode }> = ({ childre
         return saved ? JSON.parse(saved) : false;
     });
 
-    const [audioCache] = useState<Record<string, HTMLAudioElement>>({});
     const musicRef = React.useRef<HTMLAudioElement | null>(null);
     const [isMusicPlaying, setIsMusicPlaying] = useState(false);
 
     useEffect(() => {
-        // Preload sounds
-        Object.entries(SOUND_URLS).forEach(([key, url]) => {
-            const audio = new Audio(url);
-            audio.preload = 'auto';
-            audioCache[key] = audio;
-        });
-
         // Setup music
         const music = new Audio(MUSIC_URL);
         music.loop = true;
-        music.volume = 0.15; // Low background volume
+        music.volume = 0.15;
         music.preload = 'auto';
         musicRef.current = music;
 
@@ -85,7 +77,7 @@ export const SoundProvider: React.FC<{ children: React.ReactNode }> = ({ childre
                 musicRef.current = null;
             }
         };
-    }, [audioCache]);
+    }, []);
 
     // Handle mute state changes for music
     useEffect(() => {
@@ -107,16 +99,12 @@ export const SoundProvider: React.FC<{ children: React.ReactNode }> = ({ childre
         });
     }, []);
 
-    const playSound = useCallback((soundType: keyof typeof SOUND_URLS) => {
+    const playSound = useCallback((soundType: 'hover' | 'click' | 'success' | 'transition') => {
         if (isMuted) return;
-
-        const audio = audioCache[soundType];
-        if (audio) {
-            const playInstance = audio.cloneNode() as HTMLAudioElement;
-            playInstance.volume = 0.3;
-            playInstance.play().catch(() => {
-                console.debug('Audio playback blocked by browser');
-            });
+        try {
+            createSFX(soundType);
+        } catch {
+            console.debug('Audio playback blocked by browser');
         }
     }, [isMuted, audioCache]);
 
