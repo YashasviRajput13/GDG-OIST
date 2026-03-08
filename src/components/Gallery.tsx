@@ -1,6 +1,7 @@
-import { motion, useInView } from "framer-motion";
+import { motion, useInView, AnimatePresence } from "framer-motion";
 import { useRef, useEffect, useState } from "react";
 import { supabase } from "@/integrations/supabase/client";
+import { X } from "lucide-react";
 
 interface GalleryItem {
   id: string;
@@ -26,6 +27,7 @@ const Gallery = () => {
   const ref = useRef(null);
   const isInView = useInView(ref, { once: true, margin: "-100px" });
   const [galleryItems, setGalleryItems] = useState<GalleryItem[]>(fallbackGalleryItems);
+  const [lightboxItem, setLightboxItem] = useState<GalleryItem | null>(null);
 
   useEffect(() => {
     const fetchGallery = async () => {
@@ -42,7 +44,6 @@ const Gallery = () => {
 
   const headingWords = ["Moments", "from", "our", "events"];
 
-  // Split items into two rows
   const row1 = galleryItems.slice(0, Math.ceil(galleryItems.length / 2));
   const row2 = galleryItems.slice(Math.ceil(galleryItems.length / 2));
 
@@ -73,12 +74,52 @@ const Gallery = () => {
           </h2>
         </motion.div>
 
-        {/* Scrolling rows */}
         <div className="flex flex-col gap-5">
-          <InfiniteScrollRow items={row1} direction="left" speed={30} isInView={isInView} />
-          <InfiniteScrollRow items={row2} direction="right" speed={35} isInView={isInView} />
+          <InfiniteScrollRow items={row1} direction="left" speed={30} isInView={isInView} onItemClick={setLightboxItem} />
+          <InfiniteScrollRow items={row2} direction="right" speed={35} isInView={isInView} onItemClick={setLightboxItem} />
         </div>
       </div>
+
+      {/* Lightbox Modal */}
+      <AnimatePresence>
+        {lightboxItem && (
+          <motion.div
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            exit={{ opacity: 0 }}
+            className="fixed inset-0 z-50 flex items-center justify-center bg-background/80 backdrop-blur-md p-4"
+            onClick={() => setLightboxItem(null)}
+          >
+            <motion.button
+              className="absolute top-6 right-6 w-10 h-10 rounded-full bg-card border border-border flex items-center justify-center text-foreground hover:bg-muted transition-colors z-10"
+              onClick={() => setLightboxItem(null)}
+              whileHover={{ scale: 1.1 }}
+              whileTap={{ scale: 0.9 }}
+            >
+              <X size={20} />
+            </motion.button>
+            <motion.div
+              initial={{ scale: 0.8, opacity: 0 }}
+              animate={{ scale: 1, opacity: 1 }}
+              exit={{ scale: 0.8, opacity: 0 }}
+              transition={{ type: "spring", stiffness: 300, damping: 25 }}
+              className="relative max-w-4xl max-h-[85vh] rounded-2xl overflow-hidden shadow-2xl"
+              onClick={(e) => e.stopPropagation()}
+            >
+              <img
+                src={lightboxItem.src}
+                alt={lightboxItem.alt}
+                className="w-full h-full object-contain"
+              />
+              {(lightboxItem.caption || lightboxItem.alt) && (
+                <div className="absolute bottom-0 left-0 right-0 p-4 bg-gradient-to-t from-background/90 to-transparent">
+                  <p className="text-foreground font-semibold text-sm">{lightboxItem.caption || lightboxItem.alt}</p>
+                </div>
+              )}
+            </motion.div>
+          </motion.div>
+        )}
+      </AnimatePresence>
     </section>
   );
 };
@@ -88,13 +129,12 @@ interface InfiniteScrollRowProps {
   direction: "left" | "right";
   speed: number;
   isInView: boolean;
+  onItemClick: (item: GalleryItem) => void;
 }
 
-const InfiniteScrollRow = ({ items, direction, speed, isInView }: InfiniteScrollRowProps) => {
-  // Duplicate items for seamless loop
+const InfiniteScrollRow = ({ items, direction, speed, isInView, onItemClick }: InfiniteScrollRowProps) => {
   const duplicated = [...items, ...items];
-
-  const totalWidth = items.length * 340; // card width + gap estimate
+  const totalWidth = items.length * 340;
 
   return (
     <motion.div
@@ -103,7 +143,6 @@ const InfiniteScrollRow = ({ items, direction, speed, isInView }: InfiniteScroll
       transition={{ duration: 0.8, ease: [0.16, 1, 0.3, 1] }}
       className="relative overflow-hidden"
     >
-      {/* Fade edges */}
       <div className="absolute left-0 top-0 bottom-0 w-20 z-10 bg-gradient-to-r from-background to-transparent pointer-events-none" />
       <div className="absolute right-0 top-0 bottom-0 w-20 z-10 bg-gradient-to-l from-background to-transparent pointer-events-none" />
 
@@ -124,6 +163,7 @@ const InfiniteScrollRow = ({ items, direction, speed, isInView }: InfiniteScroll
         {duplicated.map((item, i) => (
           <div
             key={`${item.id}-${i}`}
+            onClick={() => onItemClick(item)}
             className="relative flex-shrink-0 w-[300px] h-[200px] md:w-[320px] md:h-[220px] rounded-2xl overflow-hidden group cursor-pointer"
             style={{
               boxShadow: "0 8px 32px -8px hsl(var(--foreground) / 0.1), 0 2px 8px -2px hsl(var(--foreground) / 0.06)",

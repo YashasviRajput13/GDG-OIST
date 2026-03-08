@@ -19,22 +19,22 @@ const numbers = [
 const milestoneItems = [
   {
     text: "Google I/O Extended",
-    link: "#",
+    link: "#events",
     image: milestoneIo,
   },
   {
     text: "Solution Challenge",
-    link: "#",
+    link: "#events",
     image: milestoneSolution,
   },
   {
     text: "DevFest 2025",
-    link: "#",
+    link: "#events",
     image: milestoneDevfest,
   },
   {
     text: "Community Impact",
-    link: "#",
+    link: "#about",
     image: milestoneCommunity,
   },
 ];

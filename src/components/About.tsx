@@ -155,13 +155,12 @@ const About = () => {
               <p className="text-sm text-muted-foreground leading-relaxed mb-4">
                 {pillar.description}
               </p>
-              <motion.div
-                initial={{ opacity: 0, x: -10 }}
-                whileInView={{ opacity: 1, x: 0 }}
-                className="flex items-center gap-1 text-xs text-primary font-medium opacity-0 group-hover:opacity-100 transition-opacity"
+              <a
+                href={i === 0 ? "#events" : i === 1 ? "#team" : i === 2 ? "#events" : "#contact"}
+                className="flex items-center gap-1 text-xs text-primary font-medium opacity-0 group-hover:opacity-100 transition-opacity hover:gap-2"
               >
                 Learn more <ArrowRight size={12} />
-              </motion.div>
+              </a>
             </motion.div>
           ))}
         </div>

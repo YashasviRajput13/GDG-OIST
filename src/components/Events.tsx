@@ -100,7 +100,10 @@ const Events = () => {
               animate={isInView ? { opacity: 1, y: 0 } : {}}
               transition={{ duration: 0.7, delay: 0.3 + i * 0.12, ease: [0.16, 1, 0.3, 1] as const }}
               whileHover={{ y: -6, scale: 1.01 }}
-              className="group bg-card rounded-3xl border border-border hover:shadow-xl hover:border-primary/15 transition-all duration-500 relative overflow-hidden"
+              onClick={() => {
+                if (event.registration_link) window.open(event.registration_link, '_blank', 'noopener,noreferrer');
+              }}
+              className={`group bg-card rounded-3xl border border-border hover:shadow-xl hover:border-primary/15 transition-all duration-500 relative overflow-hidden ${event.registration_link ? 'cursor-pointer' : ''}`}
             >
               {event.image_url && (
                 <div className="w-full h-48 overflow-hidden">
