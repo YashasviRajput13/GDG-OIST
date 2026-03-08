@@ -112,8 +112,6 @@ const Navbar = () => {
 
             <motion.a
               href="#contact"
-              onMouseEnter={() => playSound('hover')}
-              onClick={() => playSound('click')}
               whileHover={{ scale: 1.05 }}
               whileTap={{ scale: 0.95 }}
               className="px-5 py-2 rounded-full bg-primary text-primary-foreground text-sm font-semibold hover:shadow-lg hover:shadow-primary/25 transition-all"
