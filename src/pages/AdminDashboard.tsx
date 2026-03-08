@@ -63,6 +63,9 @@ const AdminDashboard = () => {
             <TabsTrigger value="team" className="gap-2">
               <Users className="h-4 w-4" /> Team
             </TabsTrigger>
+            <TabsTrigger value="testimonials" className="gap-2">
+              <MessageSquareQuote className="h-4 w-4" /> Testimonials
+            </TabsTrigger>
           </TabsList>
           <TabsContent value="gallery">
             <AdminGalleryTab />
@@ -72,6 +75,9 @@ const AdminDashboard = () => {
           </TabsContent>
           <TabsContent value="team">
             <AdminTeamTab />
+          </TabsContent>
+          <TabsContent value="testimonials">
+            <AdminTestimonialsTab />
           </TabsContent>
         </Tabs>
       </main>
