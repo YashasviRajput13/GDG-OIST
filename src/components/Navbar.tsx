@@ -185,11 +185,16 @@ const Navbar = () => {
                   {link.label}
                 </motion.a>
               ))}
+              <Link
+                to="/docs"
+                onClick={() => setIsOpen(false)}
+                className="block text-base font-medium text-muted-foreground hover:text-foreground transition-colors"
+              >
+                Docs
+              </Link>
               <a
                 href="#contact"
-                onClick={() => {
-                  setIsOpen(false);
-                }}
+                onClick={() => setIsOpen(false)}
                 className="block mt-4 px-5 py-3 rounded-full bg-primary text-primary-foreground text-center text-sm font-semibold"
               >
                 Join Us
