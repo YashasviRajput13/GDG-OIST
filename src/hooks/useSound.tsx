@@ -106,7 +106,7 @@ export const SoundProvider: React.FC<{ children: React.ReactNode }> = ({ childre
         } catch {
             console.debug('Audio playback blocked by browser');
         }
-    }, [isMuted, audioCache]);
+    }, [isMuted]);
 
     const startMusic = useCallback(() => {
         if (musicRef.current && !isMusicPlaying) {
