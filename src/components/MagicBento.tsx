@@ -324,7 +324,7 @@ const ParticleCard = ({
             element.removeEventListener('click', handleClick);
             clearAllParticles();
         };
-    }, [animateParticles, clearAllParticles, disableAnimations, enableTilt, enableMagnetism, clickEffect, glowColor, playSound]);
+    }, [animateParticles, clearAllParticles, disableAnimations, enableTilt, enableMagnetism, clickEffect, glowColor]);
 
     return (
         <div
