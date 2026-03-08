@@ -117,6 +117,12 @@ const Index = () => {
             <OrganicDivider variant="blob" flip color="--background" />
 
             <SectionTransition delay={0.05}>
+              <Testimonials />
+            </SectionTransition>
+
+            <OrganicDivider variant="curve" flip color="--background" />
+
+            <SectionTransition delay={0.05}>
               <Team />
             </SectionTransition>
 
