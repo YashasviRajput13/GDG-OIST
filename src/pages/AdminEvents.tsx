@@ -216,7 +216,7 @@ const AdminEvents = () => {
               {items.map((item) => (
                 <TableRow key={item.id}>
                   {editingId === item.id ? (
-                    <TableCell colSpan={5}>
+                    <TableCell colSpan={6}>
                       <EventFormFields />
                       <div className="flex gap-2 mt-4">
                         <Button size="sm" onClick={() => handleUpdate(item.id)}><Save className="h-4 w-4 mr-1" /> Save</Button>
