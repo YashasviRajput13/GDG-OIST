@@ -113,7 +113,7 @@ const About = () => {
               animate={isInView ? { opacity: 1, y: 0, rotateY: 0 } : {}}
               transition={{ duration: 0.7, delay: 0.9 + i * 0.12, ease: [0.16, 1, 0.3, 1] }}
               whileHover={{ y: -8, scale: 1.03, rotateY: 5 }}
-              className="relative p-8 rounded-2xl bg-background border border-border overflow-hidden group hover:shadow-xl transition-shadow duration-500"
+              className="relative p-6 rounded-2xl bg-background border border-border overflow-hidden group hover:shadow-xl transition-shadow duration-500 text-center"
               style={{ transformStyle: "preserve-3d" }}
             >
               <div className={`absolute top-0 left-0 w-full h-1 ${stat.color} transition-all duration-300 group-hover:h-1.5`} />
