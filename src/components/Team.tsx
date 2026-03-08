@@ -125,7 +125,7 @@ const Team = () => {
             return (
               <ProfileCard
                 key={m.id}
-                avatarUrl={m.avatar_url || '/placeholder.svg'}
+                avatarUrl={toDirectImageUrl(m.avatar_url || '/placeholder.svg')}
                 name={m.name}
                 title={m.role}
                 handle={m.name.toLowerCase().replace(/\s+/g, '')}
