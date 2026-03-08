@@ -1,6 +1,7 @@
 import { motion, useInView, useScroll, useTransform } from "framer-motion";
 import { useRef, useEffect, useState } from "react";
 import { supabase } from "@/integrations/supabase/client";
+import { toDirectImageUrl } from "@/lib/driveUrl";
 import ProfileCard from "./ProfileCard";
 
 interface TeamMember {
