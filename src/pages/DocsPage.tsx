@@ -2,6 +2,7 @@ import { useState } from "react";
 import { Link } from "react-router-dom";
 import { motion } from "framer-motion";
 import { ChevronDown, ArrowLeft, BookOpen, Server, Layers, Shield, Database, Zap, Palette, Sparkles, Wrench, Layout, Menu, X } from "lucide-react";
+import { SEO } from "@/components/SEO";
 
 interface DocSection {
   id: string;
@@ -508,6 +509,11 @@ const DocsPage = () => {
 
   return (
     <div className="min-h-screen bg-background flex">
+      <SEO 
+        title="Documentation - GDG OIST Bhopal" 
+        description="Engineering documentation and setup guide for the GDG OIST developer community website." 
+        url="https://gdg-oist.com/docs" 
+      />
       {/* Mobile sidebar toggle */}
       <button
         onClick={() => setSidebarOpen(!sidebarOpen)}

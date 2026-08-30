@@ -7,6 +7,7 @@ import SectionTransition from "@/components/SectionTransition";
 import OrganicDivider from "@/components/OrganicDivider";
 import CursorGlow from "@/components/CursorGlow";
 import { WebGLErrorBoundary } from "@/components/WebGLErrorBoundary";
+import { SEO } from "@/components/SEO";
 
 // Lazy-load below-the-fold sections to reduce initial bundle
 const TechMarquee = lazy(() => import("@/components/TechMarquee"));
@@ -42,6 +43,10 @@ const Index = () => {
 
   return (
     <div className="min-h-screen bg-background grain-overlay">
+      <SEO 
+        title="GDG OIST Bhopal" 
+        description="Join the most vibrant developer community at OIST Bhopal. We host workshops, hackathons, and tech talks powered by Google technologies." 
+      />
       {/* Fixed Aurora WebGL background */}
       <div style={{ position: 'fixed', inset: 0, zIndex: 0, pointerEvents: 'none' }}>
         <WebGLErrorBoundary>
